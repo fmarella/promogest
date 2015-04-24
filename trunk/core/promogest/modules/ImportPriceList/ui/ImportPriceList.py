@@ -154,8 +154,8 @@ class ImportPriceList(GladeWidget):
         _priceList = []
         rowcount = 0
         width = len(self.modelFields)
-        print "LUNGHEZZA DEI CAMPI NEL MODEL della gui ", width
-        print "LUNGHEZZA DEi campi del file ",len(table[0])
+        print("LUNGHEZZA DEI CAMPI NEL MODEL della gui ", width)
+        print("LUNGHEZZA DEi campi del file ",len(table[0]))
         for row in table:
             if len(row) == width:
                 product= dict(zip(self.modelFields, row))

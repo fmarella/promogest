@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2014 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -20,7 +20,7 @@
 #    You should have received a copy of the GNU General Public License
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
-import os, popen2
+import os
 from datetime import datetime
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
@@ -32,7 +32,6 @@ from promogest.dao.Magazzino import Magazzino
 from promogest.dao.ScontoRigaMovimento import ScontoRigaMovimento
 from promogest.modules.VenditaDettaglio.dao.TestataScontrino import TestataScontrino
 from promogest.modules.VenditaDettaglio.dao.RigaScontrino import RigaScontrino
-from promogest.modules.VenditaDettaglio.dao.ScontoRigaScontrino import ScontoRigaScontrino
 from promogest.modules.VenditaDettaglio.dao.ChiusuraFiscale import ChiusuraFiscale
 from promogest.lib.utils import *
 from promogest.modules.VenditaDettaglio.ui.VenditaDettaglioUtils import fillComboboxPos
@@ -49,20 +48,23 @@ class GestioneChiusuraFiscale(GladeWidget):
         self.idPuntoCassa = None
         self.__draw()
 
-
     def __draw(self):
         fillComboboxMagazzini(self.chiusura_id_magazzino_combobox)
         if hasattr(Environment.conf, "VenditaDettaglio"):
             if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
-                findComboboxRowFromStr(self.chiusura_id_magazzino_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+                findComboboxRowFromStr(self.chiusura_id_magazzino_combobox,
+                                       Environment.conf.VenditaDettaglio.magazzino,2)
         elif setconf("VenditaDettaglio", "magazzino_vendita"):
-            findComboboxRowFromId(self.chiusura_id_magazzino_combobox, setconf("VenditaDettaglio", "magazzino_vendita"))
+            findComboboxRowFromId(self.chiusura_id_magazzino_combobox,
+                                  setconf("VenditaDettaglio", "magazzino_vendita"))
         fillComboboxPos(self.chiusura_id_pos_combobox)
         if hasattr(Environment.conf, "VenditaDettaglio"):
             if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
-                findComboboxRowFromStr(self.chiusura_id_pos_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+                findComboboxRowFromStr(self.chiusura_id_pos_combobox,
+                                       Environment.conf.VenditaDettaglio.puntocassa,2)
         elif setconf("VenditaDettaglio", "punto_cassa"):
-            findComboboxRowFromId(self.chiusura_id_pos_combobox,setconf("VenditaDettaglio", "punto_cassa"))
+            findComboboxRowFromId(self.chiusura_id_pos_combobox,
+                                  setconf("VenditaDettaglio", "punto_cassa"))
         self.chiusura_date_datewidget.setNow()
 
     def on_ok_chiusura_button_clicked(self, button):
@@ -70,11 +72,11 @@ class GestioneChiusuraFiscale(GladeWidget):
         data = stringToDate(self.chiusura_date_datewidget.get_text())
         self.idPuntoCassa = findIdFromCombobox(self.chiusura_id_pos_combobox)
         self.idMagazzino = findIdFromCombobox(self.chiusura_id_magazzino_combobox)
-        chiusure = ChiusuraFiscale().select( dataChiusura = data,
-                                            offset = None,
-                                            idMagazzino = self.idMagazzino,
-                                            idPuntoCassa = self.idPuntoCassa,
-                                            batchSize = None)
+        chiusure = ChiusuraFiscale().select(dataChiusura=data,
+                                            offset=None,
+                                            idMagazzino=self.idMagazzino,
+                                            idPuntoCassa=self.idPuntoCassa,
+                                            batchSize=None)
         if chiusure :
             msg = "ATTENZIONE:\n La chiusura odierna e` gia' stata effettuata"
             messageError(msg=msg, transient =self.getTopLevel())
@@ -90,13 +92,14 @@ class GestioneChiusuraFiscale(GladeWidget):
         datefirst = data
         OneDay = datetime.timedelta(days=1)
         aData= data+OneDay
-        scontrini = TestataScontrino().select(daData = datefirst,
-                                            aData = aData,  # Scontrini prodotti nella giornata odierna
-                                            idMagazzino = self.idMagazzino,
-                                            idPuntoCassa = self.idPuntoCassa,
-                                            offset = None,
-                                            batchSize = None)
-        ##Environment.pg2log.info( "SCONTRINI PRODOTTI IN GIORNATA N° %s dettaglio: %s" ) %(str(len(scontrini)or""), str(scontrini)or"")
+        # Scontrini prodotti nella giornata odierna
+        scontrini = TestataScontrino().select(daData=datefirst,
+                                              aData=aData,
+                                              idMagazzino=self.idMagazzino,
+                                              idPuntoCassa=self.idPuntoCassa,
+                                              offset=None,
+                                              batchSize=None)
+        # Environment.pg2log.info( "SCONTRINI PRODOTTI IN GIORNATA N° %s dettaglio: %s" ) %(str(len(scontrini)or""), str(scontrini)or"")
         # Creo nuovo movimento
         if self.idMagazzino:
             mag = Magazzino().getRecord(id=self.idMagazzino)
@@ -112,10 +115,6 @@ class GestioneChiusuraFiscale(GladeWidget):
             nomePuntoCassa = " "
 
         daoMovimento = TestataMovimento()
-        #if hasattr(Environment.conf, "VenditaDettaglio"):
-            #daoMovimento.operazione = Environment.conf.VenditaDettaglio.operazione
-        #else:
-        #daoMovimento.operazione = setconf("VenditaDettaglio", "operazione")
         daoMovimento.operazione = "Scarico venduto da cassa"
         daoMovimento.data_movimento = datefirst
         daoMovimento.note_interne = """Movimento chiusura fiscale  magazzino: %s, punto cassa: %s """ %(str(nomeMagazzino),str(nomePuntoCassa))
@@ -138,12 +137,11 @@ class GestioneChiusuraFiscale(GladeWidget):
                     dictRigheProv[cri] = daoss
 
         listRighe = []
-        for k,v in dictRigheProv.iteritems():
-            if len(v) ==1:
+        for k, v in dictRigheProv.iteritems():
+            if len(v) == 1:
                 listRighe.append(v[0])
                 v[0].quantitaaa = v[0].quantita
             else:
-                listPrezzi = []
                 quantita = 0
                 for a in v:
                     quantita += a.quantita
@@ -151,8 +149,6 @@ class GestioneChiusuraFiscale(GladeWidget):
                 listRighe.append(v[0])
 
         for riga in listRighe:
-
-            # Istanzio articolo
             art = Articolo().getRecord(id=riga.id_articolo)
             # Cerco IVA
             iva = AliquotaIva().getRecord(id=art.id_aliquota_iva)
@@ -189,25 +185,7 @@ class GestioneChiusuraFiscale(GladeWidget):
 
         # Creo il file
         filechiusura = self.create_fiscal_close_file()
-        # Mando comando alle casse
-        #if hasattr(Environment.conf, "VenditaDettaglio"):
-            #if not(hasattr(Environment.conf.VenditaDettaglio,'disabilita_stampa_chiusura') and \
-                    #Environment.conf.VenditaDettaglio.disabilita_stampa_chiusura == 'yes'):
-                #program_launch = Environment.conf.VenditaDettaglio.driver_command
-                #program_params = (' ' + filechiusura + ' ' +
-                                  #Environment.conf.VenditaDettaglio.serial_device)
 
-                #if os.name == 'nt':
-                    #exportingProcessPid = os.spawnl(os.P_NOWAIT, program_launch, program_params)
-                    #id, ret_value = os.waitpid(exportingProcessPid, 0)
-                    #ret_value = ret_value >> 8
-                #else:
-                    #command = program_launch + program_params
-                    #process = popen2.Popen3(command, True)
-                    #message = process.childerr.readlines()
-                    #ret_value = process.wait()
-            #else:
-                #ret_value = 0
         if setconf("VenditaDettaglio", "disabilita_stampa_chiusura"):
             ret_value = 0
         else:
@@ -254,7 +232,7 @@ class GestioneChiusuraFiscale(GladeWidget):
 
     def on_empty_button_clicked(self, button):
         self.gladeobj.scontrino_treeview.get_model().clear()
-        #self.empty_current_row()
+        # self.empty_current_row()
         self.gladeobj.label_totale.set_markup('<b><span size="xx-large">0.00</span></b>')
         self.gladeobj.label_resto.set_markup('<b><span size="xx-large">0.00</span></b>')
         self.gladeobj.empty_button.set_sensitive(False)

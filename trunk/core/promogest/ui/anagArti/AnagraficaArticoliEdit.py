@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2013 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -62,7 +62,7 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                                 url_help="http://www.promogest.me")
         self._widgetFirstFocus = self.codice_entry
         self._loading = False
-        #FIXME: promogest.dao.Articolo.isNuovoCodiceByFamiglia()
+        # FIXME: promogest.dao.Articolo.isNuovoCodiceByFamiglia()
         self._codiceByFamiglia = promogest.dao.Articolo.isNuovoCodiceByFamiglia()
         self._duplicatedDaoId = None
 
@@ -71,8 +71,6 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.codici_a_barre_label.set_text('')
             self.plus_radiobutton.set_property('visible', False)
             self.plus_radiobutton.set_no_show_all(True)
-            #self.codici_a_barre_hseparator.set_property('visible', False)
-            #self.codici_a_barre_hseparator.set_no_show_all(True)
             self.con_taglie_colori_radiobutton.set_property('visible', False)
             self.con_taglie_colori_radiobutton.set_no_show_all(True)
             self.taglie_colori_togglebutton.set_property('visible', False)
@@ -89,40 +87,51 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
             self.frame_promowear.set_sensitive(False)
             self.codici_a_barre_togglebutton.set_sensitive(True)
             self.taglie_colori_togglebutton.set_sensitive(False)
-            fillComboboxGruppiTaglia(self.id_gruppo_taglia_customcombobox.combobox)
-            self.id_gruppo_taglia_customcombobox.connect('clicked',
-                                                         on_id_gruppo_taglia_customcombobox_clicked)
+            fillComboboxGruppiTaglia(
+                self.id_gruppo_taglia_customcombobox.combobox)
+            self.id_gruppo_taglia_customcombobox.connect(
+                'clicked',
+                on_id_gruppo_taglia_customcombobox_clicked)
             fillComboboxTaglie(self.id_taglia_customcombobox.combobox)
-            self.id_taglia_customcombobox.connect('clicked',
-                                                  self.on_id_taglia_customcombobox_clicked)
+            self.id_taglia_customcombobox.connect(
+                'clicked',
+                self.on_id_taglia_customcombobox_clicked)
             fillComboboxColori(self.id_colore_customcombobox.combobox)
-            self.id_colore_customcombobox.connect('clicked',
-                                                  self.on_id_colore_customcombobox_clicked)
+            self.id_colore_customcombobox.connect(
+                'clicked',
+                self.on_id_colore_customcombobox_clicked)
             fillComboboxModelli(self.id_modello_customcombobox.combobox)
-            self.id_modello_customcombobox.connect('clicked',
-                                                  on_id_modello_customcombobox_clicked)
+            self.id_modello_customcombobox.connect(
+                'clicked',
+                on_id_modello_customcombobox_clicked)
             fillComboboxAnniAbbigliamento(self.id_anno_combobox)
             fillComboboxStagioniAbbigliamento(self.id_stagione_combobox)
             fillComboboxGeneriAbbigliamento(self.id_genere_combobox)
 
         #combo e draw della parte normale dell'applicazione  ...
         fillComboboxAliquoteIva(self.id_aliquota_iva_customcombobox.combobox)
-        self.id_aliquota_iva_customcombobox.connect('clicked',
-                                            on_id_aliquota_iva_customcombobox_clicked)
-        fillComboboxCategorieArticoli(self.id_categoria_articolo_customcombobox.combobox)
-        self.id_categoria_articolo_customcombobox.connect('clicked',
-                                            on_id_categoria_articolo_customcombobox_clicked)
+        self.id_aliquota_iva_customcombobox.connect(
+            'clicked',
+            on_id_aliquota_iva_customcombobox_clicked)
+        fillComboboxCategorieArticoli(
+            self.id_categoria_articolo_customcombobox.combobox)
+        self.id_categoria_articolo_customcombobox.connect(
+            'clicked',
+            on_id_categoria_articolo_customcombobox_clicked)
         fillComboboxFamiglieArticoli(self.id_famiglia_articolo_customcombobox.combobox)
-        self.id_famiglia_articolo_customcombobox.connect('clicked',
-                                            on_id_famiglia_articolo_customcombobox_clicked)
+        self.id_famiglia_articolo_customcombobox.connect(
+            'clicked',
+            on_id_famiglia_articolo_customcombobox_clicked)
         if self._codiceByFamiglia:
-            #Collega la creazione di un nuovo codice articolo al cambiamento della famiglia
-            self.id_famiglia_articolo_customcombobox.combobox.connect('changed',
-                                                                      self.on_id_famiglia_articolo_customcombobox_changed)
+            # Collega la creazione di un nuovo codice articolo al cambiamento della famiglia
+            self.id_famiglia_articolo_customcombobox.combobox.connect(
+                'changed',
+                self.on_id_famiglia_articolo_customcombobox_changed)
         fillComboboxStatiArticoli(self.id_stato_articolo_combobox)
         fillComboboxImballaggi(self.id_imballaggio_customcombobox.combobox)
-        self.id_imballaggio_customcombobox.connect('clicked',
-                                                   on_id_imballaggio_customcombobox_clicked)
+        self.id_imballaggio_customcombobox.connect(
+            'clicked',
+            on_id_imballaggio_customcombobox_clicked)
         fillComboboxUnitaBase(self.id_unita_base_combobox)
         fillComboboxUnitaFisica(self.unita_dimensioni_comboboxentry,'dimensioni')
         fillComboboxUnitaFisica(self.unita_volume_comboboxentry,'volume')
@@ -132,10 +141,12 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 
         if posso("ADR"):
             self.adr_page = ADRNotebookPage(self)
-            self.notebook1.append_page(self.adr_page.adr_frame, self.adr_page.adr_page_label)
+            self.notebook1.append_page(self.adr_page.adr_frame,
+                                       self.adr_page.adr_page_label)
         if posso("CSA"):
             self.csa_page = CSANotebookPage(self)
-            self.notebook1.append_page(self.csa_page.csa_frame, self.csa_page.csa_page_label)
+            self.notebook1.append_page(self.csa_page.csa_frame,
+                                       self.csa_page.csa_page_label)
         else:
             self.csa_togglebutton.destroy()
 
@@ -208,7 +219,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         self.sospeso_checkbutton.set_active(self.dao.sospeso or False)
         if posso("PW"):
              #articolo ancora non salvato o articolo senza taglia e colore
-             #Articolo in anagrafica già salvato con id_articolo_padre pieno quindi è una variante
+             # Articolo in anagrafica già salvato con id_articolo_padre
+             # pieno quindi è una variante
             a = articleTypeGuiManage(self, self.dao, new=self.new)
         if posso("GN"):
             self.divisore_noleggio_entry.set_text(str(self.dao.divisore_noleggio))
@@ -222,34 +234,47 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         """ Salvataggio del dao con un po' di logica legata alle diverse
             tipologie di articolo :noleggio, su misura, promowear
         """
-        if (self.codice_entry.get_text() == ''):
+        if self.codice_entry.get_text() == '':
             obligatoryField(self.dialogTopLevel,
-                            self.codice_entry, campo="Codice")
-        if (self.denominazione_entry.get_text() == ''):
+                            self.codice_entry,
+                            campo="Codice")
+        if self.denominazione_entry.get_text() == '':
             obligatoryField(self.dialogTopLevel,
-                            self.denominazione_entry,campo="Denominazione")
+                            self.denominazione_entry,
+                            campo="Denominazione")
         if findIdFromCombobox(self.id_aliquota_iva_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel,
-                            self.id_aliquota_iva_customcombobox.combobox, campo="Aliquota Iva")
+                            self.id_aliquota_iva_customcombobox.combobox,
+                            campo="Aliquota Iva")
         if findIdFromCombobox(self.id_famiglia_articolo_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel,
-                            self.id_famiglia_articolo_customcombobox.combobox, campo="Famiglia merceologica")
+                            self.id_famiglia_articolo_customcombobox.combobox,
+                            campo="Famiglia merceologica")
         if findIdFromCombobox(self.id_categoria_articolo_customcombobox.combobox) is None:
             obligatoryField(self.dialogTopLevel,
-                            self.id_categoria_articolo_customcombobox.combobox, campo="Categoria articolo")
+                            self.id_categoria_articolo_customcombobox.combobox,
+                            campo="Categoria articolo")
         if findIdFromCombobox(self.id_unita_base_combobox) is None:
             obligatoryField(self.dialogTopLevel,
-                            self.id_unita_base_combobox, campo="Unita' base")
+                            self.id_unita_base_combobox,
+                            campo="Unita' base")
         pbar(self.dialog.pbar,parziale=1, totale=4)
         if posso("PW") and (articleType(self.dao) == "plus" or self.plus_radiobutton.get_active()):
             articoloTagliaColore = ArticoloTagliaColore()
-            articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(self.id_gruppo_taglia_customcombobox.combobox)
-            articoloTagliaColore.id_taglia = findIdFromCombobox(self.id_taglia_customcombobox.combobox)
-            articoloTagliaColore.id_colore = findIdFromCombobox(self.id_colore_customcombobox.combobox)
-            articoloTagliaColore.id_modello = findIdFromCombobox(self.id_modello_customcombobox.combobox)
-            articoloTagliaColore.id_anno = findIdFromCombobox(self.id_anno_combobox)
-            articoloTagliaColore.id_stagione = findIdFromCombobox(self.id_stagione_combobox)
-            articoloTagliaColore.id_genere = findIdFromCombobox(self.id_genere_combobox)
+            articoloTagliaColore.id_gruppo_taglia = findIdFromCombobox(
+                self.id_gruppo_taglia_customcombobox.combobox)
+            articoloTagliaColore.id_taglia = findIdFromCombobox(
+                self.id_taglia_customcombobox.combobox)
+            articoloTagliaColore.id_colore = findIdFromCombobox(
+                self.id_colore_customcombobox.combobox)
+            articoloTagliaColore.id_modello = findIdFromCombobox(
+                self.id_modello_customcombobox.combobox)
+            articoloTagliaColore.id_anno = findIdFromCombobox(
+                self.id_anno_combobox)
+            articoloTagliaColore.id_stagione = findIdFromCombobox(
+                self.id_stagione_combobox)
+            articoloTagliaColore.id_genere = findIdFromCombobox(
+                self.id_genere_combobox)
             self.dao.articoloTagliaColore = articoloTagliaColore
             articoloTagliaColore = None
             #potrà sembrare una ripetizione ma preferisco gestirlo di fino con altri controlli
@@ -487,7 +512,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if self.dao.id is None:
             msg = 'Prima di poter inserire i listini occorre salvare l\' articolo.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(
+                    self.dialogTopLevel, GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return
@@ -506,14 +532,15 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if self.dao.id is None:
             msg = 'Prima di poter stampare una label occorre salvare l\' articolo.\n Salvare ?'
             if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
+                self.on_anagrafica_complessa_detail_dialog_response(
+                    self.dialogTopLevel, GTK_RESPONSE_APPLY)
             else:
                 toggleButton.set_active(False)
                 return
 
         if self.dao.codice_a_barre is None:
-            msg = 'Prima di poter stampare una label occorre aggiungere un codice a barre ?'
-            messageInfo(msg = msg)
+            msg = 'Prima di poter stampare una label occorre aggiungere un codice a barre'
+            messageInfo(msg=msg)
             toggleButton.set_active(False)
             return
 
@@ -560,7 +587,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
                     daoScontoi.valore = s.valore
                     daoScontoi.tipo_sconto = s.tipo_sconto
                     sconti_ingrosso.append(daoScontoi)
-            daoLA.persist(sconti={"dettaglio":sconti_dettaglio,"ingrosso":sconti_ingrosso})
+            daoLA.persist(sconti={"dettaglio":sconti_dettaglio,
+                                  "ingrosso":sconti_ingrosso})
 
         self._duplicatedDaoId = None
 
@@ -573,9 +601,11 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
         if not self._codiceByFamiglia:
             return
 
-        idFamiglia = findIdFromCombobox(self.id_famiglia_articolo_customcombobox.combobox)
+        idFamiglia = findIdFromCombobox(
+            self.id_famiglia_articolo_customcombobox.combobox)
         if idFamiglia is not None:
-            self.dao.codice = promogest.dao.Articolo.getNuovoCodiceArticolo(idFamiglia=idFamiglia)
+            self.dao.codice = promogest.dao.Articolo.getNuovoCodiceArticolo(
+                idFamiglia=idFamiglia)
             self.codice_entry.set_text(self.dao.codice)
 
     def on_normale_radiobutton_toggled(self, radioButton):
@@ -593,7 +623,8 @@ class AnagraficaArticoliEdit(AnagraficaEdit):
 da PLUS a NORMALE questo comporta la perdita
 dei dati accessori. Continuare?"""
                     if YesNoDialog(msg=msg, transient=self.dialogTopLevel):
-                        #self.on_anagrafica_complessa_detail_dialog_response(self.dialogTopLevel, GTK_RESPONSE_APPLY)
+                        # self.on_anagrafica_complessa_detail_dialog_response(
+                        # self.dialogTopLevel, GTK_RESPONSE_APPLY)
                         self.id_anno_combobox.set_active(-1)
                         self.id_genere_combobox.set_active(-1)
                         self.id_stagione_combobox.set_active(-1)
@@ -601,11 +632,18 @@ dei dati accessori. Continuare?"""
                         self.id_taglia_customcombobox.combobox.set_active(-1)
                         self.id_modello_customcombobox.combobox.set_active(-1)
                         self.id_colore_customcombobox.combobox.set_active(-1)
-                        self.denominazione_genere_label.set_property('visible', False)
-                        self.denominazione_taglia_label.set_property('visible', False)
-                        self.denominazione_colore_label.set_property('visible', False)
-                        self.denominazione_gruppo_taglia_label.set_property('visible', False)
-                        self.denominazione_stagione_anno_label.set_property('visible', False)
+                        self.denominazione_genere_label.set_property('visible',
+                                                                     False)
+                        self.denominazione_taglia_label.set_property('visible',
+                                                                     False)
+                        self.denominazione_colore_label.set_property('visible',
+                                                                     False)
+                        self.denominazione_gruppo_taglia_label.set_property(
+                            'visible',
+                            False)
+                        self.denominazione_stagione_anno_label.set_property(
+                            'visible',
+                            False)
                         self.memo_wear.set_text("""ARTICOLO NORMALE""")
                     else:
                         self.plus_radiobutton.set_sensitive(True)
@@ -620,7 +658,7 @@ dei dati accessori. Continuare?"""
             self.frame_promowear.set_sensitive(False)
 
     def on_plus_radiobutton_toggled(self, radioButton):
-        active= radioButton.get_active()
+        active = radioButton.get_active()
         if active:
             self.plus_radiobutton.set_active(True)
             self.codici_a_barre_togglebutton.set_sensitive(True)
@@ -632,7 +670,7 @@ dei dati accessori. Continuare?"""
             self.frame_promowear.set_sensitive(True)
 
     def on_con_taglie_colori_radiobutton_toggled(self, radioButton):
-        active= radioButton.get_active()
+        active = radioButton.get_active()
         if active:
             self.con_taglie_colori_radiobutton.set_active(True)
             self.codici_a_barre_togglebutton.set_sensitive(False)
@@ -692,10 +730,11 @@ dei dati accessori. Continuare?"""
         idTaglie = set(a.id_taglia for a in articoliTagliaColore)
         if idTaglie:
             idTaglie.remove(self.dao.id_taglia)
-        on_id_taglia_customcombobox_clicked(widget,
-                                            button,
-                                            idGruppoTaglia=self.dao.id_gruppo_taglia,
-                                            ignore=list(idTaglie))
+        on_id_taglia_customcombobox_clicked(
+            widget,
+            button,
+            idGruppoTaglia=self.dao.id_gruppo_taglia,
+            ignore=list(idTaglie))
 
     def on_id_colore_customcombobox_clicked(self, widget, button):
         articoliTagliaColore = self.dao.articoliTagliaColore

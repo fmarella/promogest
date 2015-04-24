@@ -41,7 +41,11 @@ class RigaScontrino(Base, Dao):
         __table__ = t_riga_scontrino
 
     arti = relationship("Articolo") #serve
-    srs = relationship("ScontoRigaScontrino",primaryjoin=__table__.c.id ==t_sconto_riga_scontrino.c.id_riga_scontrino, cascade="all, delete") #serve
+    srs = relationship(
+        "ScontoRigaScontrino",
+        primaryjoin=__table__.c.id==t_sconto_riga_scontrino.c.id_riga_scontrino,
+        cascade="all, delete")
+        # serve
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)

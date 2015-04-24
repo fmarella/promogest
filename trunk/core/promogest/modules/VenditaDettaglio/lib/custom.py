@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#    Copyright (C) 2005-2012 by Promotux
+#    Copyright (C) 2005-2015 by Promotux
 #                        di Francesco Meloni snc - http://www.promotux.it/
 
 #    Author: Francesco Meloni  <francesco@promotux.it>
@@ -21,10 +21,10 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest import Environment
-#from promogest.buildEnv import set_configuration  #server per i test
+# from promogest.buildEnv import set_configuration  #server per i test
 import datetime
 from promogest.lib.utils import *
-from  subprocess import *
+from subprocess import *
 import popen2
 import serial
 
@@ -58,9 +58,9 @@ class Custom(object):
 
     """
     def __init__(self, anag=None):
-        #conf = set_configuration(company=Environment.azienda) #serve per i test
+        # conf = set_configuration(company=Environment.azienda) #serve per i test
         try: # vecchio stile ...adattamento ai dati in setconf
-            #self.path = conf.VenditaDettaglio.export_path  #serve per i test
+            # self.path = conf.VenditaDettaglio.export_path  #serve per i test
             self.path = Environment.VenditaDettaglio.export_path
         except: # prendo la cartella temp standard
             self.path = Environment.documentsDir
@@ -119,14 +119,14 @@ Credito cliente                         12
                 rep = "4"
             if riga.quantita < 0:
                 # riga reso
-                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ str(quantita) +"*"+ p+'H9M'+"H"+rep+"R\n"
+                stringa = '"' + deaccenta(riga.descrizione[:19]) + '"' + str(quantita) + "*" + p+'H9M'+"H"+rep+"R\n"
                 f.write(stringa)
             elif quantita != 1:
                 # quantita' non unitaria
-                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ str(quantita) +"*"+ p+"H"+rep+"R"+sco+"\n"
+                stringa = '"' + deaccenta(riga.descrizione[:19]) + '"' + str(quantita) + "*" + p + "H" + rep + "R" + sco + "\n"
                 f.write(stringa)
             elif riga.quantita == 1:
-                stringa = '"'+ deaccenta(riga.descrizione[:19])+'"'+ p+"H"+rep+"R"+sco+"\n"
+                stringa = '"' + deaccenta(riga.descrizione[:19]) + '"' + p+"H"+rep+"R"+sco+"\n"
                 f.write(stringa)
 
             """ GESTIONE SUBTOTALE ED EVENTUALI SCONTI
@@ -145,7 +145,7 @@ Es. Annulla scontrino
         if daoScontrino.sconti:
 
             for sconto in daoScontrino.sconti:
-                if sconto.tipo_sconto =='percentuale':
+                if sconto.tipo_sconto == 'percentuale':
                     sco += str(sconto.valore)+"*2M"
                 else:
                     sco += str(sconto.valore)+"H4M"
@@ -176,16 +176,16 @@ Es. chiusura a contanti / assegni con calcolo del resto:
         t_carta = daoScontrino.totale_carta_credito
 
         if t_contanti > 0 and t_assegni == 0 and t_carta == 0:
-            #abbiamo un pagamento in contanti con gli altri metodi a zero
-            f.write(str(mN(t_contanti,2)).replace(".", "") + "H1T\n")
+            # abbiamo un pagamento in contanti con gli altri metodi a zero
+            f.write(str(mN(t_contanti, 2)).replace(".", "") + "H1T\n")
         elif t_contanti == 0 and t_assegni > 0 and t_carta == 0:
-            #abbiamo un pagamento con assegno con gli altri metodi a zero
-            f.write(str(mN(t_contanti,2)).replace(".", "") + "H2T\n")
+            # abbiamo un pagamento con assegno con gli altri metodi a zero
+            f.write(str(mN(t_contanti, 2)).replace(".", "") + "H2T\n")
         elif t_contanti == 0 and t_assegni == 0 and t_carta > 0:
-            #abbiamo un pagamento con carta con gli altri metodi a zero
-            f.write(str(mN(t_contanti,2)).replace(".", "") + "H3T\n")
+            # abbiamo un pagamento con carta con gli altri metodi a zero
+            f.write(str(mN(t_contanti, 2)).replace(".", "") + "H3T\n")
         elif t_contanti == 0 and t_assegni == 0 and t_carta == 0:
-            #abbiamo un pagamento senza segnare contanti o altro
+            # abbiamo un pagamento senza segnare contanti o altro
             f.write("1T\n")
 
         f.close()
@@ -193,7 +193,7 @@ Es. chiusura a contanti / assegni con calcolo del resto:
 
     def sendToPrint(self, filesToSend):
         """ Mando comando alle casse """
-        print "DEVO INVIARE IL FILE", filesToSend
+        # print "DEVO INVIARE IL FILE", filesToSend
         self.serial_manager(filesToSend)
 
 
@@ -203,15 +203,15 @@ Es. chiusura a contanti / assegni con calcolo del resto:
             ser.baudrate = Environment.conf.VenditaDettaglio.baud
         except:
             ser.baudrate = 9600
-        #ser.port = '/dev/ttyUSB0'
+        # ser.port = '/dev/ttyUSB0'
         ser.port = Environment.conf.VenditaDettaglio.serial_device
         ser.xonxoff = True
         ser.open()
-        #print ser
+        # print ser
         with open(filesToSend,"r") as f:
             scontr = f.read()
-        #ser.write("1000H1R=15.25*2M100H4M1T")
-        #print scontr
+        # ser.write("1000H1R=15.25*2M100H4M1T")
+        # print scontr
         ser.write(scontr)
         f.close()
         ser.close()

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 #    Copyright (C) 2005-2015
-#by Promotux di Francesco Meloni snc - http://www.promotux.it/
+#    by Promotux di Francesco Meloni snc - http://www.promotux.it/
 
-# Author: Francesco Meloni <francesco@promotux.it>
+#    Author: Francesco Meloni <francesco@promotux.it>
 
 #    This file is part of Promogest.
 
@@ -21,7 +21,7 @@
 #    along with Promogest.  If not, see <http://www.gnu.org/licenses/>.
 
 from promogest.lib.utils import *
-from  subprocess import *
+from subprocess import *
 from datetime import datetime
 from promogest import Environment
 from promogest.ui.GladeWidget import GladeWidget
@@ -43,34 +43,37 @@ from GestioneScontrini import GestioneScontrini
 from GestioneChiusuraFiscale import GestioneChiusuraFiscale
 from VenditaDettaglioUtils import fillComboboxPos
 from promogest.ui.PrintDialog import PrintDialogHandler
-from promogest.lib.HtmlHandler import createHtmlObj, renderTemplate, renderHTML
+from promogest.lib.HtmlHandler import renderTemplate
 from promogest.ui.utilsCombobox import fillComboboxCCardType
 
 from promogest.ui.gtk_compat import *
 AAA = False
+# FIXME: CHE schifezza è questa?
 if Environment.params["schema"]:
-    val=0
+    val = 0
     for a in Environment.params["schema"].lower():
         val += ord(a)
     if val == Environment.aaa:
         AAA = True
 
-
 DRIVER = None
 
 if hasattr(Environment.conf, "VenditaDettaglio"):
-    if hasattr(Environment.conf.VenditaDettaglio,"backend") and\
-        Environment.conf.VenditaDettaglio.backend.upper() =="OLIVETTI":
+    if hasattr(
+            Environment.conf.VenditaDettaglio, "backend") and\
+            Environment.conf.VenditaDettaglio.backend.upper() == "OLIVETTI":
         from promogest.modules.VenditaDettaglio.lib.olivetti import ElaExecute
         DRIVER = "E"
-    elif hasattr(Environment.conf.VenditaDettaglio,"backend") and\
-        Environment.conf.VenditaDettaglio.backend.capitalize() == "DITRON" and\
-        Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
+    elif hasattr(
+            Environment.conf.VenditaDettaglio, "backend") and\
+            Environment.conf.VenditaDettaglio.backend.capitalize() == "DITRON" and\
+            Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
         from promogest.modules.VenditaDettaglio.lib.ditron import Ditron
         DRIVER = "D"
-    elif hasattr(Environment.conf.VenditaDettaglio,"backend") and\
-        Environment.conf.VenditaDettaglio.backend.upper() == "CUSTOM" and\
-        Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
+    elif hasattr(
+            Environment.conf.VenditaDettaglio, "backend") and\
+            Environment.conf.VenditaDettaglio.backend.upper() == "CUSTOM" and\
+            Environment.conf.VenditaDettaglio.disabilita_stampa == 'no':
         from promogest.modules.VenditaDettaglio.lib.custom import Custom
         DRIVER = "C"
     elif Environment.conf.VenditaDettaglio.disabilita_stampa == 'yes':
@@ -79,19 +82,19 @@ if hasattr(Environment.conf, "VenditaDettaglio"):
         print("ERRORE NELLA DEFINIZIONE DEL BACKEND")
         from promogest.modules.VenditaDettaglio.lib.ditron import Ditron
         DRIVER = "D"
-elif setconf("VenditaDettaglio","disabilita_stampa"):
+elif setconf("VenditaDettaglio", "disabilita_stampa"):
     DRIVER = None
+print("DRIVER", DRIVER)
 
-
-print "DRIVER", DRIVER
 
 class AnagraficaVenditaDettaglio(GladeWidget):
     """ Frame per la gestione delle vendite a dettaglio """
 
     def __init__(self):
-        GladeWidget.__init__(self, root='vendita_dettaglio_window',
-                        path='VenditaDettaglio/gui/vendita_dettaglio_window.glade',
-                        isModule=True)
+        GladeWidget.__init__(self,
+                             root='vendita_dettaglio_window',
+                             path='VenditaDettaglio/gui/vendita_dettaglio_window.glade',
+                             isModule=True)
         self.idPuntoCassa = None
         self.idMagazzino = None
         if not Environment.magazzino_pos:
@@ -103,19 +106,20 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         if not Environment.nobrand:
             textStatusBar = _("    PromoGest - Vendita Dettaglio - www.promogest.me - info@promotux.it      ")
         else:
-            textStatusBar = _(" %s Build: %s - %s" % (Environment.VERSIONE, Environment.rev_locale, Environment.partner))
-        context_id = self.vendita_dettaglio_statusbar.get_context_id("vendita_dettaglio_window")
+            textStatusBar = _(" %s Build: %s - %s" % (Environment.VERSIONE,
+                                                      Environment.rev_locale,
+                                                      Environment.partner))
+        context_id = self.vendita_dettaglio_statusbar.get_context_id(
+            "vendita_dettaglio_window")
         self.vendita_dettaglio_statusbar.push(context_id, textStatusBar)
         azienda = Azienda().getRecord(id=Environment.azienda)
         if azienda:
             self.logo_articolo.set_from_file(azienda.percorso_immagine or '')
         self.createPopupMenu()
-        #nascondo i dati riga e le info aggiuntive
+        # nascondo i dati riga e le info aggiuntive
         self.dati_riga_frame.destroy()
         self.shop = Environment.shop
-#        self.rowBoldFont = 'arial bold 12'
         self.rowBoldFont = 'arial 13'
-#        self.rowBackGround = '#E6E6FF'
         self.rowBackGround = "#FFFFC0"
         self.draw()
 
@@ -123,17 +127,25 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         fillComboboxMagazzini(self.ao_magazzino_combobox)
         if hasattr(Environment.conf, "VenditaDettaglio"):
             if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
-                findComboboxRowFromStr(self.ao_magazzino_combobox, Environment.conf.VenditaDettaglio.magazzino,2)
+                findComboboxRowFromStr(
+                    self.ao_magazzino_combobox,
+                    Environment.conf.VenditaDettaglio.magazzino, 2)
         elif setconf("VenditaDettaglio", "magazzino_vendita"):
-            findComboboxRowFromId(self.ao_magazzino_combobox, setconf("VenditaDettaglio", "magazzino_vendita"))
+            findComboboxRowFromId(
+                self.ao_magazzino_combobox,
+                setconf("VenditaDettaglio", "magazzino_vendita"))
         else:
             messageInfo(msg="Selezionare un magazzino")
         fillComboboxPos(self.ao_punto_cassa_combobox)
         if hasattr(Environment.conf, "VenditaDettaglio"):
             if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
-                findComboboxRowFromStr(self.ao_punto_cassa_combobox, Environment.conf.VenditaDettaglio.puntocassa,2)
+                findComboboxRowFromStr(
+                    self.ao_punto_cassa_combobox,
+                    Environment.conf.VenditaDettaglio.puntocassa, 2)
         elif setconf("VenditaDettaglio", "punto_cassa"):
-            findComboboxRowFromId(self.ao_punto_cassa_combobox,setconf("VenditaDettaglio", "punto_cassa"))
+            findComboboxRowFromId(
+                self.ao_punto_cassa_combobox,
+                setconf("VenditaDettaglio", "punto_cassa"))
         else:
             messageInfo(msg="Aggiungere e selezionare un punto cassa\ndal menu opzioni presente nella finestra di vendita ")
         self.altre_opzioni_dialog.set_transient_for(self.topLevelWindow)
@@ -141,31 +153,28 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.altre_opzioni_dialog.run()
 
     def draw(self):
-        if DRIVER =="E":
-#            self.apri_cassetto_button.set_active(True)
+        if DRIVER == "E":
             self.apri_cassetto_button.set_sensitive(True)
         accelGroup = gtk.AccelGroup()
         self.getTopLevel().add_accel_group(accelGroup)
-        self.contanti_radio_button.add_accelerator('clicked', accelGroup,
-                                            GDK_KEY_F1, 0, GTK_ACCEL_VISIBLE)
-        self.assegni_radio_button.add_accelerator('clicked', accelGroup,
-                                            GDK_KEY_F2, 0, GTK_ACCEL_VISIBLE)
-        self.carta_di_credito_radio_button.add_accelerator('clicked', accelGroup,
-                                            GDK_KEY_F3, 0, GTK_ACCEL_VISIBLE)
-        self.total_button.add_accelerator('grab_focus', accelGroup,
-                                            GDK_KEY_F5, 0, GTK_ACCEL_VISIBLE)
+        self.contanti_radio_button.add_accelerator(
+            'clicked', accelGroup, GDK_KEY_F1, 0, GTK_ACCEL_VISIBLE)
+        self.assegni_radio_button.add_accelerator(
+            'clicked', accelGroup, GDK_KEY_F2, 0, GTK_ACCEL_VISIBLE)
+        self.carta_di_credito_radio_button.add_accelerator(
+            'clicked', accelGroup, GDK_KEY_F3, 0, GTK_ACCEL_VISIBLE)
+        self.total_button.add_accelerator(
+            'grab_focus', accelGroup, GDK_KEY_F5, 0, GTK_ACCEL_VISIBLE)
         self.total_button.set_focus_on_click(False)
 
         # Disabilito bottoni e text entry
-        #self.confirm_button.set_sensitive(False)
         self.delete_button.set_sensitive(False)
         self.rhesus_button.set_sensitive(False)
-        #self.annulling_button.set_sensitive(False)
         self.total_button.set_sensitive(False)
         self.subtotal_button.set_sensitive(False)
         self.empty_button.set_sensitive(False)
         self.sconto_hbox.set_sensitive(False)
-        self.setPagamento(enabled = False)
+        self.setPagamento(enabled=False)
 
         self.codice_a_barre_entry.grab_focus()
         self._loading = False
@@ -174,16 +183,17 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         treeViewSelection = self.scontrino_treeview.get_selection()
         self.scontrino_treeview.set_property('rules-hint', True)
         treeViewSelection.connect('changed',
-                                self.on_scontrino_treeview_selection_changed)
+                                  self.on_scontrino_treeview_selection_changed)
         fillComboboxCCardType(self.card_type_combobox)
         # Ricerca listino
         self.id_listino = self.ricercaListino()
 
         # Ricerca magazzino
         if hasattr(Environment.conf, "VenditaDettaglio"):
-            magalist = Magazzino().select(denominazione = Environment.conf.VenditaDettaglio.magazzino,
-                                        offset = None,
-                                        batchSize = None)
+            magalist = Magazzino().select(
+                denominazione=Environment.conf.VenditaDettaglio.magazzino,
+                offset=None,
+                batchSize=None)
             if len(magalist) > 0:
                 self.id_magazzino = magalist[0].id
             else:
@@ -204,8 +214,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
     def on_ao_ok_button_clicked(self, button):
         self.idPuntoCassa = findIdFromCombobox(self.ao_punto_cassa_combobox)
         self.idMagazzino = findIdFromCombobox(self.ao_magazzino_combobox)
-        strPuntoCassa = findStrFromCombobox(self.ao_punto_cassa_combobox,2)
-        strMagazzino = findStrFromCombobox(self.ao_magazzino_combobox,2)
+        strPuntoCassa = findStrFromCombobox(self.ao_punto_cassa_combobox, 2)
+        strMagazzino = findStrFromCombobox(self.ao_magazzino_combobox, 2)
         if hasattr(Environment.conf, "VenditaDettaglio"):
             Environment.conf.VenditaDettaglio.puntocassa = strPuntoCassa
             Environment.conf.VenditaDettaglio.magazzino = strMagazzino
@@ -218,7 +228,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             else:
                 a = SetConf()
                 a.section = "VenditaDettaglio"
-                a.tipo_section ="Modulo"
+                a.tipo_section = "Modulo"
                 a.description = "punto cassa"
                 a.tipo = "int"
                 a.key = "punto_cassa"
@@ -240,39 +250,33 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 a.active = True
                 a.persist()
         if not self.idMagazzino:
-            obligatoryField(None, widget=None, msg="Magazzino Obbligatorio")
+            obligatoryField(None, msg="Magazzino Obbligatorio")
             return
         self.altre_opzioni_dialog.hide()
         testo = "OPERATORE: <b>%s</b>  --  MAGAZZINO/P.VENDITA: <b>%s</b>  --  PUNTO CASSA: <b>%s</b>" %(Environment.params["usernameLoggedList"][1], strMagazzino, strPuntoCassa)
         self.info_label.set_markup(testo)
 
-#    def on_no_stampa_toggled_toggled(self, button):
-
-
     def on_anagrafica_punti_cassa_activate_item(self, item):
         from AnagraficaPOS import AnagraficaPos
         anag = AnagraficaPos()
-
         showAnagrafica(self.getTopLevel(), anag, item, self)
 
     def on_anagrafica_tipi_carta_activate(self, item):
         from promogest.ui.AnagraficaCCardType import AnagraficaCCardType
         anag = AnagraficaCCardType()
-
         showAnagrafica(self.getTopLevel(), anag, item, self)
-
 
     def on_column_prezzo_edited(self, cell, path, value):
         """ Function to set the value prezzo edit in the cell"""
         model = self.righe_scontrino_liststore
-        value=value.replace(",",".")
+        value = value.replace(",", ".")
         value = mN(value)
         model[path][5] = str(value)
         if model[path][7] == '%':
             tipoSconto = "percentuale"
         else:
             tipoSconto = "valore"
-        if model[path][6]== 0 or not model[path][5]:
+        if model[path][6] == 0 or not model[path][5]:
             tipoSconto = None
             model[path][8] = model[path][5]
         else:
@@ -287,13 +291,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             if not prezzoscontato:
                 prezzoscontato = "0.00"
             model[path][8] = str(prezzoscontato)
-        model[path][10] = str(mN(Decimal(model[path][9])* Decimal(model[path][8]),2))
+        model[path][10] = str(mN(Decimal(model[path][9])* Decimal(model[path][8]), 2))
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
     def on_column_sconto_edited(self, cellrenderertext, path, text):
-        #model = treeview.get_model()
-        #model[path][6] = value
         self.righe_scontrino_liststore[path][6] = text
         prez = self.righe_scontrino_liststore[path][5]
         self.on_column_prezzo_edited(cellrenderertext, path, prez)
@@ -322,7 +324,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         value=value.replace(",",".")
         value = mN(value)
         model[path][9] = str(value)
-        model[path][10] = str(mN(Decimal(value)* Decimal(model[path][8].replace(",",".")),2))
+        model[path][10] = str(mN(Decimal(value)*Decimal(model[path][8].replace(",", ".")), 2))
         self.refreshTotal()
         self.on_cancel_button_clicked(self.getTopLevel)
 
@@ -362,7 +364,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             except:
                 Environment.pg2log.info("ARTICOLO JOLLY NON SETTATO NEL CONFIGURE NELLA SEZIONE [VenditaDettaglio]")
         elif keyname == 'F9':
-            messageInfo(msg= "ATTENZIONE!, Errore, contattare assistenza")
+            messageInfo(msg="ATTENZIONE!, Errore, contattare assistenza")
             raise Exception("CONFCONF")
 
     def fnovewidget(self,codice=None, destroy=None):
@@ -371,9 +373,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             prezzo1 = self.prezzo_f9_entry.get_text()
             quantita1 = self.quantita_f9_entry.get_text()
             self.articolo_generico_dialogo.hide()
-            self.search_item(codice=self.codi,fnove=True,valorigenerici=(quantita1,prezzo1) )
+            self.search_item(codice=self.codi,
+                             fnove=True,
+                             valorigenerici=(quantita1,prezzo1))
         else:
-            self.codi =  codice
+            self.codi = codice
             self.prezzo_f9_entry.set_text("")
             self.quantita_f9_entry.set_text("1")
             self.dialog_genrico_vbox.show_all()
@@ -402,21 +406,21 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.quantita_f9_entry.set_text(str(valore+1))
 
     def search_item(self, codiceABarre=None, codice=None,
-                                valorigenerici=[], descrizione=None,
-                                fnove=False):
+                    valorigenerici=[], descrizione=None,
+                    fnove=False):
         # Ricerca articolo per barcode
         if codiceABarre:
-            arts = Articolo().select(codiceABarre = codiceABarre,
-                                                 offset = None,
-                                                 batchSize = None)
+            arts = Articolo().select(codiceABarre=codiceABarre,
+                                     offset=None,
+                                     batchSize=None)
         elif codice:
-            arts = Articolo().select(codice = codice,
-                                                 offset = None,
-                                                 batchSize = None)
+            arts = Articolo().select(codice=codice,
+                                     offset=None,
+                                     batchSize=None)
         elif descrizione:
-            arts = Articolo().select(denominazione = descrizione,
-                                                 offset = None,
-                                                 batchSize = None)
+            arts = Articolo().select(denominazione=descrizione,
+                                     offset=None,
+                                     batchSize=None)
 
         if len(arts) == 1:
             idArticolo = arts[0].id
@@ -450,14 +454,11 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                         else:
                             prezzoScontato = mN(mN(prezzo) -mN(valoreSconto))
 
-
             self.codice_a_barre_entry.set_text(codiceABarre)
             self.codice_entry.set_text(codice)
-            self.activate_item(idArticolo, listinoRiga, codiceABarre,codice,
-                               descrizione, prezzo, valoreSconto,tipoSconto,
+            self.activate_item(idArticolo, listinoRiga, codiceABarre, codice,
+                               descrizione, prezzo, valoreSconto, tipoSconto,
                                prezzoScontato, quantita)
-            #self.confirm_button.grab_focus()
-            #if not fnove:
             self.on_confirm_button_clicked(self.getTopLevel())
             self.refreshTotal()
         else:
@@ -551,18 +552,17 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             tipoSconto = ""
 
         self.rhesus_button.set_sensitive(True)
-        #self.annulling_button.set_sensitive(True)
-        self._currentRow = {'idArticolo' : idArticolo,
-                            'listinoRiga' : listinoRiga,
-                            'codiceABarre' : codiceABarre,
-                            'codice' : codice,
-                            'descrizione' : denominazione,
-                            'prezzo' : prezzo,
-                            'valoreSconto' : valoreSconto,
-                            'tipoSconto' : tipoSconto,
-                            'prezzoScontato':prezzoScontato,
-                            'quantita' : quantita,
-                            'totale':Decimal(prezzoScontato or 0)*Decimal(quantita or 0 )}
+        self._currentRow = {'idArticolo': idArticolo,
+                            'listinoRiga': listinoRiga,
+                            'codiceABarre': codiceABarre,
+                            'codice': codice,
+                            'descrizione': denominazione,
+                            'prezzo': prezzo,
+                            'valoreSconto': valoreSconto,
+                            'tipoSconto': tipoSconto,
+                            'prezzoScontato': prezzoScontato,
+                            'quantita': quantita,
+                            'totale': Decimal(prezzoScontato or 0)*Decimal(quantita or 0)}
 
     def on_scontrino_treeview_selection_changed(self, treeSelection):
         (model, iterator) = treeSelection.get_selected()
@@ -596,13 +596,14 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 for l in listiniList:
                     if l.denominazione != listinoPref.denominazione:
                         self.listino_liststore.append([l.id,l.denominazione])
-            self.descrizione_label.set_markup('<b><span foreground="black" size="12000">'\
-                                            +model.get_value(self.currentIteratorRow, 2)\
-                                            + " - " \
-                                            + model.get_value(self.currentIteratorRow, 3)\
-                                            +" - " \
-                                            +model.get_value(self.currentIteratorRow, 4)\
-                                            +'</span></b>')
+            self.descrizione_label.set_markup(
+                '<b><span foreground="black" size="12000">'\
+                + model.get_value(self.currentIteratorRow, 2)\
+                + " - " \
+                + model.get_value(self.currentIteratorRow, 3)\
+                + " - " \
+                + model.get_value(self.currentIteratorRow, 4)\
+                + '</span></b>')
             self.giacenza_label.set_text(str(giacenzaArticolo(year=Environment.workingYear,
                                     idArticolo=idArticolo,
                                     idMagazzino=self.idMagazzino)[0]))
@@ -612,10 +613,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         # controllo che il prezzo non sia nullo
         if self._currentRow['prezzo'] == 0:
             messageWarning(msg="<b>ATTENZIONE:\n</b>Inserire un prezzo all'articolo",
-                transient= self.getTopLevel())
-            #self.prezzo_entry.grab_focus()
+                transient = self.getTopLevel())
             self._state == 'editing'
-            #return
 
         treeview = self.scontrino_treeview
         #model = treeview.get_model()
@@ -623,33 +622,43 @@ class AnagraficaVenditaDettaglio(GladeWidget):
 
         if self._state == 'search':
             model.append([
-                        self._currentRow['idArticolo'],
-                        self._currentRow['listinoRiga'][1],
-                        self._currentRow['codiceABarre'],
-                        self._currentRow['codice'],
-                        self._currentRow['descrizione'],
-                        str(mN(self._currentRow['prezzo'])),
-                        str(mN(self._currentRow['valoreSconto'])),
-                        self._currentRow['tipoSconto'],
-                        str(mN(self._currentRow['prezzoScontato'])),
-                        str(Decimal(self._currentRow['quantita'])) ,
-                        str(mN(Decimal(self._currentRow['quantita'])*Decimal(self._currentRow['prezzoScontato']))),
-
+                self._currentRow['idArticolo'],
+                self._currentRow['listinoRiga'][1],
+                self._currentRow['codiceABarre'],
+                self._currentRow['codice'],
+                self._currentRow['descrizione'],
+                str(mN(self._currentRow['prezzo'])),
+                str(mN(self._currentRow['valoreSconto'])),
+                self._currentRow['tipoSconto'],
+                str(mN(self._currentRow['prezzoScontato'])),
+                str(Decimal(self._currentRow['quantita'])),
+                str(mN(Decimal(self._currentRow['quantita']) * Decimal(
+                    self._currentRow['prezzoScontato']))),
             ])
-                                    #self.rowBackGround,
-                        #self.rowBoldFont,
         elif self._state == 'editing':
-            model.set_value(self.currentIteratorRow, 0, self._currentRow['idArticolo'])
-            model.set_value(self.currentIteratorRow, 1, self._currentRow['listinoRiga'][1])
-            model.set_value(self.currentIteratorRow, 2, self._currentRow['codiceABarre'])
-            model.set_value(self.currentIteratorRow, 3, self._currentRow['codice'])
-            model.set_value(self.currentIteratorRow, 4, self._currentRow['descrizione'])
-            model.set_value(self.currentIteratorRow, 5, str(mN(self._currentRow['prezzo'])))
-            model.set_value(self.currentIteratorRow, 6, str(mN(self._currentRow['valoreSconto'])))
-            model.set_value(self.currentIteratorRow, 7, self._currentRow['tipoSconto'])
-            model.set_value(self.currentIteratorRow, 8, str(mN(self._currentRow['prezzoScontato'])))
-            model.set_value(self.currentIteratorRow, 9, str(Decimal(self._currentRow['quantita'])))
-            model.set_value(self.currentIteratorRow, 10, str(mN(Decimal(self._currentRow['quantita'])*self._currentRow['prezzoScontato']),2))
+            model.set_value(
+                self.currentIteratorRow, 0, self._currentRow['idArticolo'])
+            model.set_value(
+                self.currentIteratorRow, 1, self._currentRow['listinoRiga'][1])
+            model.set_value(
+                self.currentIteratorRow, 2, self._currentRow['codiceABarre'])
+            model.set_value(
+                self.currentIteratorRow, 3, self._currentRow['codice'])
+            model.set_value(
+                self.currentIteratorRow, 4, self._currentRow['descrizione'])
+            model.set_value(
+                self.currentIteratorRow, 5, str(mN(self._currentRow['prezzo'])))
+            model.set_value(
+                self.currentIteratorRow, 6, str(mN(self._currentRow['valoreSconto'])))
+            model.set_value(
+                self.currentIteratorRow, 7, self._currentRow['tipoSconto'])
+            model.set_value(
+                self.currentIteratorRow, 8, str(mN(self._currentRow['prezzoScontato'])))
+            model.set_value(
+                self.currentIteratorRow, 9, str(Decimal(self._currentRow['quantita'])))
+            model.set_value(
+                self.currentIteratorRow, 10, str(mN(Decimal(
+                    self._currentRow['quantita'])*self._currentRow['prezzoScontato']), 2))
 
         self.marginevalue_label.set_text('')
         self.ultimocostovalue_label.set_text('')
@@ -658,13 +667,10 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         self.righe_label.set_markup('<b>[ '+str(len(model)) +' ] Righe scontrino</b>')
         # Disabilito cancella e conferma e abilito ricerca barcode
         self.delete_button.set_sensitive(False)
-        #self.confirm_button.set_sensitive(False)
         self.rhesus_button.set_sensitive(False)
-        #self.annulling_button.set_sensitive(False)
         self.codice_a_barre_entry.set_sensitive(True)
         self.codice_entry.set_sensitive(True)
         self.descrizione_entry.set_sensitive(True)
-
         self.search_button.set_sensitive(True)
         # Abilito pulsante totale e annulla
         notEmpty = (len(model) > 0)
@@ -759,7 +765,6 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             prezzoScontato = mN(row[8]) or 0
             quantita = Decimal(row[9])
             if valoreSconto == 0: #sconto
-#                print "PREZZO E QUANTITA", prezzo, quantita
                 total = total + (prezzo * quantita)
             else:
                 total = total + (prezzoScontato * quantita)
@@ -782,27 +787,36 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                     totale_sconto = total*(Decimal(self.sconto)/100)
                     totale_scontato = total-totale_sconto
 
-        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + mNLC(totale_scontato,2) +'</span></b>')
-        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + mNLC(totale_sconto,2) +'</span></b>')
-        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + mNLC(total,2) +'</span></b>')
+        self.label_totale.set_markup(
+            '<b><span foreground="black" size="40000">'
+            + mNLC(totale_scontato, 2)
+            + '</span></b>')
+        self.label_sconto.set_markup(
+            '<b><span foreground="#338000" size="24000">'
+            + mNLC(totale_sconto, 2)
+            + '</span></b>')
+        self.label_subtotale.set_markup(
+            '<b><span foreground="#338000" size="26000">'
+            + mNLC(total, 2)
+            + '</span></b>')
 
-#        self.label_totale.set_markup('<b><span foreground="black" size="40000">' + str(mN(totale_scontato)) +'</span></b>')
-#        self.label_sconto.set_markup('<b><span foreground="#338000" size="24000">' + str(mN(totale_sconto)) +'</span></b>')
-#        self.label_subtotale.set_markup('<b><span foreground="#338000" size="26000">' + str(mN(total)) +'</span></b>')
-
-        return (totale_scontato,total,totale_sconto, self.sconto)
+        return (totale_scontato, total,totale_sconto, self.sconto)
 
     def on_empty_button_clicked(self, button):
         self.scontrino_treeview.get_model().clear()
         self.empty_current_row()
-        self.label_totale.set_markup('<b><span foreground="black" size="40000">0,00</span></b>')
-        self.label_resto.set_markup('<b><span foreground="black" size="24000">0,00</span></b>')
-        self.label_subtotale.set_markup('<b><span foreground="black" size="24000">0,00</span></b>')
-        self.label_sconto.set_markup('<b><span foreground="black" size="26000">0,00</span></b>')
+        self.label_totale.set_markup(
+            '<b><span foreground="black" size="40000">0,00</span></b>')
+        self.label_resto.set_markup(
+            '<b><span foreground="black" size="24000">0,00</span></b>')
+        self.label_subtotale.set_markup(
+            '<b><span foreground="black" size="24000">0,00</span></b>')
+        self.label_sconto.set_markup(
+            '<b><span foreground="black" size="26000">0,00</span></b>')
         self.empty_button.set_sensitive(False)
         self.total_button.set_sensitive(False)
         self.subtotal_button.set_sensitive(False)
-        self.setPagamento(enabled = False)
+        self.setPagamento(enabled=False)
         self.sconto_totale_entry.set_text("")
         self.sconto_hbox.set_sensitive(False)
         self.codice_a_barre_entry.grab_focus()
@@ -902,23 +916,17 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             a.persist()
         # Creo il file e lo stampo
         if DRIVER and not self.no_print_toggled.get_active():
-            #print "SIAMO QUI PRONTI A MANDARE LO SCONTRINO IN CASSA"
             filescontrino = self.createFileToPos(dao)
-            #print "TORNATI", filescontrino
         if setconf("VenditaDettaglio", "create_pdf_check") and not self.no_print_toggled.get_active() :
             from  xhtml2pdf import pisa
             if dao:
-                pageData = {}
-                #html = '<html></html>'
                 pageData = {
                     "file": "scontrino.html",
                     "dao" :dao,
                     "tutto":False
                     }
                 html = renderTemplate(pageData)
-                #renderHTML(self.detail,self.html)
                 f = str(html.encode("utf-8"))
-        #        f = "Hello <strong>World</strong>"
                 filename =Environment.tempDir + "ristampa.pdf"
                 g = file(filename, "wb")
                 pdf = pisa.CreatePDF(f,g)
@@ -997,12 +1005,8 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                                quantita)
 
             self.prezzo_entry.grab_focus()
-            #try:
-                #if Environment.conf.VenditaDettaglio.direct_confirm == "yes":
             self.on_confirm_button_clicked(self.getTopLevel())
             self.refreshTotal()
-            #except:
-                #pass
 
         from promogest.ui.RicercaComplessaArticoli import RicercaComplessaArticoli
         codiceABarre = self.codice_a_barre_entry.get_text()
@@ -1022,6 +1026,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         """ open the anagraficaArticolo Semplice to add a new article
         """
         return
+        # TODO Riattivare questa funzione
         from promogest.ui.anagArti.AnagraficaArticoliSemplice import AnagraficaArticoliSemplice
         anag = AnagraficaArticoliSemplice()
         anagWindow = anag.getTopLevel()
@@ -1055,7 +1060,7 @@ class AnagraficaVenditaDettaglio(GladeWidget):
         else:
             totale_pagamento = 0
         resto = totale_pagamento - totale_scontrino
-        self.label_resto.set_markup('<b><span size="xx-large">'+ italianizza(resto) +'</span></b>')
+        self.label_resto.set_markup('<b><span size="xx-large">' + italianizza(resto) +'</span></b>')
 
         if self.total_button.is_focus():
             self.on_total_button_clicked(button)
@@ -1132,37 +1137,33 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             filescontrino = Custom(anag=self).create_export_file(daoScontrino=dao)
 
     def on_chiusura_fiscale_activate(self, widget):
-#        if DRIVER=="D":
-        anag = GestioneChiusuraFiscale(self) #.chiusuraDialog(widget, self.id_magazzino)
-        #anag.set_transient_for(self)
+        anag = GestioneChiusuraFiscale(self)
         anagWindow = anag.getTopLevel()
-        #anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
-        #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
         anagWindow.set_transient_for(self.getTopLevel())
         anagWindow.show_all()
 
     def on_stampa_del_giornale_breve_activate(self, widget):
-        if DRIVER =="D":
+        if DRIVER == "D":
             Ditron().stampa_del_giornale_breve()
 
     def on_stampa_del_periodico_cassa_activate(self, widget):
-        if DRIVER =="D":
+        if DRIVER == "D":
             Ditron().stampa_del_periodico_cassa()
 
     def on_stampa_del_periodico_reparti_activate(self, widget):
-        if DRIVER =="D":
+        if DRIVER == "D":
             Ditron().stampa_del_periodico_reparti()
 
     def on_stampa_del_periodico_articoli_activate(self, widget):
-        if DRIVER =="D":
+        if DRIVER == "D":
             Ditron().stampa_del_periodico_articoli()
 
     def on_stampa_della_affluenza_oraria_activate(self, widget):
-        if DRIVER =="D":
+        if DRIVER == "D":
             Ditron().stampa_della_affluenza_oraria()
 
     def on_apri_cassetto_button_clicked(self, button):
-        if DRIVER =="E":
+        if DRIVER == "E":
             try: # vecchio stile ...adattamento ai dati in setconf
                 path = Environment.conf.VenditaDettaglio.export_path
             except: # prendo la cartella temp standard
@@ -1202,19 +1203,17 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                     tipoSconto = self._simboloEuro
             listinoRiga = ""
             model.append((idArticolo,
-                            str(listinoRiga),
-                            str(codiceABarre),
-                            str(codiceArticolo),
-                            descrizione,
-                            str(prezzo),
-                            str(sconto),
-                            str(tipoSconto),
-                            str(prezzoScontato),
-                            str(quantita),
-                            str(mN(quantita * prezzoScontato,2)),
-                            ))
-                                                        #self.rowBackGround,
-                            #self.rowBoldFont
+                          str(listinoRiga),
+                          str(codiceABarre),
+                          str(codiceArticolo),
+                          descrizione,
+                          str(prezzo),
+                          str(sconto),
+                          str(tipoSconto),
+                          str(prezzoScontato),
+                          str(quantita),
+                          str(mN(quantita * prezzoScontato, 2)),
+                          ))
 
         notEmpty = (len(model) > 0)
         self.total_button.set_sensitive(notEmpty)
@@ -1244,21 +1243,17 @@ class AnagraficaVenditaDettaglio(GladeWidget):
                 return 1
 
     def createPopupMenu(self):
-        self.file_menu = gtk.Menu()    # Don't need to show menus
-        # Create the menu items
+        # Don't need to show menus
+        self.file_menu = gtk.Menu()
         open_item = gtk.MenuItem(label="Conferma")
-        #save_item = gtk.MenuItem(label="Cancella")
         quit_item = gtk.MenuItem(label="Annulla")
-        # Add them to the menu
         self.file_menu.append(open_item)
         self.file_menu.append(quit_item)
         open_item.connect_object("activate", self.on_confirm_button_clicked, "file.open")
         #save_item.connect_object("activate", self.on_empty_button_clicked, "file.save")
         quit_item.connect_object("activate", self.on_cancel_button_clicked, "file.quit")
 
-        # We do need to show menu items
         open_item.show()
-        #save_item.show()
         quit_item.show()
 
     def on_subtotal_button_clicked(self, button):
@@ -1272,25 +1267,13 @@ class AnagraficaVenditaDettaglio(GladeWidget):
             showAnagraficaRichiamata(self.getTopLevel(), gestWnd, None, self.creaScontrinoReso)
         else:
             messageInfo(msg="ATTENZIONE! Chiamare assistenza")
-            raise  Exception("CONF CONF")
+            raise Exception("CONF CONF")
 
 
 def on_anagrafica_destroyed(anagrafica_window, argList):
-    mainWindow = argList[0]
-    anagraficaButton= argList[1]
-    mainClass = argList[2]
     if anagrafica_window in Environment.windowGroup:
         Environment.windowGroup.remove(anagrafica_window)
-#    if anagraficaButton is not None:
-#        anagraficaButton.set_active(False)
-#    if mainClass is not None:
-#        mainClass.on_button_refresh_clicked()
-
 
 def showAnagrafica(window, anag, button=None, mainClass=None):
     anagWindow = anag.getTopLevel()
-    #anagWindow.connect("destroy", on_anagrafica_destroyed, [window, button,mainClass])
-    #anagWindow.connect("hide", on_anagrafica_destroyed, [window, button,mainClass])
-    #anagWindow.set_transient_for(window)
-    #anag.vendita_dettaglio_window.show()
     anagWindow.show_all()

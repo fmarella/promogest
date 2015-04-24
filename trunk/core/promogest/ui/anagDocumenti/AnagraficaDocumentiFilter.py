@@ -38,10 +38,11 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
     """ Filtro per la ricerca nei documenti """
 
     def __init__(self, anagrafica):
-        AnagraficaFilter.__init__(self,
-                                anagrafica,
-                                root='anagrafica_documenti_filter_table',
-                                path='_ricerca_semplice_documenti.glade')
+        AnagraficaFilter.__init__(
+            self,
+            anagrafica,
+            root='anagrafica_documenti_filter_table',
+            path='_ricerca_semplice_documenti.glade')
         self._widgetFirstFocus = self.da_data_filter_entry
         if not posso("GN"):
             self.noleggio_expander.destroy()
@@ -55,10 +56,14 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         Disegna colonne della Treeview per il filtro
         """
         fillComboboxPagamenti(self.id_pagamento_filter_combobox)
-        fillComboboxOperazioni(self.id_operazione_filter_combobox, 'documento', True, extra=True)
+        fillComboboxOperazioni(self.id_operazione_filter_combobox,
+                               'documento',
+                               True,
+                               extra=True)
         self.id_operazione_filter_combobox.set_active(0)
         fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
-        self.id_operazione_filter_combobox.set_wrap_width(setconf("Numbers", "combo_column") or 1)
+        self.id_operazione_filter_combobox.set_wrap_width(
+            setconf("Numbers", "combo_column") or 1)
         self.cliente_filter_radiobutton.set_active(True)
         self.on_filter_radiobutton_toggled()
         self.id_agente_filter_customcombobox.setHandler("agente")
@@ -76,21 +81,16 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
 
         if column.get_name() == "numero_column":
             self.funzione_ordinamento = None
-            return self._changeOrderBy(column,
-                                       (None,TestataDocumento.numero))
+            return self._changeOrderBy(column, (None, TestataDocumento.numero))
         if column.get_name() == "data_column":
             self.funzione_ordinamento = None
-            return self._changeOrderBy(column,
-                                       (None,TestataDocumento.data_documento))
+            return self._changeOrderBy(column, (None, TestataDocumento.data_documento))
         if column.get_name() == "tipo_documento_column":
             self.funzione_ordinamento = None
-            return self._changeOrderBy(column,
-                                       (None,TestataDocumento.operazione))
+            return self._changeOrderBy(column, (None, TestataDocumento.operazione))
         if column.get_name() == "saldato_column":
             self.funzione_ordinamento = None
-            return self._changeOrderBy(column,
-                                       (None,
-                                        TestataDocumento.documento_saldato))
+            return self._changeOrderBy(column, (None, TestataDocumento.documento_saldato))
         if column.get_name() == "cliente_fornitore_column":
             self.aa = -1*self.aa
             self.funzione_ordinamento = "cliforn"
@@ -106,7 +106,6 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         """
         Annullamento filtro
          """
-
         self.da_data_filter_entry.set_text('01/01/' + Environment.workingYear)
         self.a_data_filter_entry.set_text('')
         self.da_data_pagamento_filter_entry.set_text('')
@@ -117,7 +116,7 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         self.descrizione_riga_entry.set_text("")
         self.id_pagamento_filter_combobox.set_active(-1)
         self.id_operazione_filter_combobox.set_active(0)
-        if hasattr(self._anagrafica, "_magazzinoFissato") and not\
+        if hasattr(self._anagrafica, "_magazzinoFissato") and not \
                 self._anagrafica._magazzinoFissato:
             fillComboboxMagazzini(self.id_magazzino_filter_combobox, True)
             self.id_magazzino_filter_combobox.set_active(0)
@@ -157,7 +156,8 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
         aNumero = prepareFilterString(self.a_numero_filter_entry.get_text())
         protocollo = prepareFilterString(self.protocollo_entry.get_text())
         descrizioneRiga = self.descrizione_riga_entry.get_text()
-        idOperazione = prepareFilterString(findIdFromCombobox(self.id_operazione_filter_combobox))
+        idOperazione = prepareFilterString(findIdFromCombobox(
+            self.id_operazione_filter_combobox))
         stringaOpe = findStrFromCombobox(self.id_operazione_filter_combobox, 2)
         extra = None
         if stringaOpe == "TUTTI Doc vendita":
@@ -214,10 +214,14 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
                            "extra": extra}
 
         if posso("GN"):
-            daDataInizioNoleggio = stringToDate(self.da_data_inizio_noleggio_filter_entry.get_text())
-            aDataInizioNoleggio = stringToDate(self.a_data_inizio_noleggio_filter_entry.get_text())
-            daDataFineNoleggio = stringToDate(self.da_data_fine_noleggio_filter_entry.get_text())
-            aDataFineNoleggio = stringToDateBumped(self.a_data_fine_noleggio_filter_entry.get_text())
+            daDataInizioNoleggio = stringToDate(
+                self.da_data_inizio_noleggio_filter_entry.get_text())
+            aDataInizioNoleggio = stringToDate(
+                self.a_data_inizio_noleggio_filter_entry.get_text())
+            daDataFineNoleggio = stringToDate(
+                self.da_data_fine_noleggio_filter_entry.get_text())
+            aDataFineNoleggio = stringToDateBumped(
+                self.a_data_fine_noleggio_filter_entry.get_text())
             self.filterDict.update(daDataInizioNoleggio=daDataInizioNoleggio,
                                    aDataInizioNoleggio=aDataInizioNoleggio,
                                    daDataFineNoleggio=daDataFineNoleggio,
@@ -225,8 +229,10 @@ class AnagraficaDocumentiFilter(AnagraficaFilter):
 
         def filterCountClosure():
             if idArticolo:
-                a = TestataDocumento().count(filterDict=self.filterDict, idArticoloMov=idArticolo) or 0
-                b = TestataDocumento().count(filterDict=self.filterDict, idArticoloDoc=idArticolo) or 0
+                a = TestataDocumento().count(filterDict=self.filterDict,
+                                             idArticoloMov=idArticolo) or 0
+                b = TestataDocumento().count(filterDict=self.filterDict,
+                                             idArticoloDoc=idArticolo) or 0
                 return a+b
             return TestataDocumento().count(filterDict=self.filterDict)
 
