@@ -47,7 +47,7 @@ class ListinoArticolo(Base, Dao):
 
     arti = relationship("Articolo", primaryjoin=and_(
                 __table__.c.id_articolo == Articolo.id,
-                Articolo.cancellato==False),
+                Articolo.cancellato == False),
                         backref=backref("listinoarticolo",
                                         cascade="all, delete"))
     SVD = relationship("ScontoVenditaDettaglio",
@@ -73,7 +73,8 @@ class ListinoArticolo(Base, Dao):
         self.__scontiVenditaIngr = None
 
     def __repr__(self):
-        return "<VariazioneListino ID_LIST={0} ID_ART={1} DATA_LI={2}>".format(self.id_listino, self.id_articolo, self.data_listino_articolo)
+        return "<VariazioneListino ID_LIST={0} ID_ART={1} DATA_LI={2}>".format(
+            self.id_listino, self.id_articolo, self.data_listino_articolo)
 
     @reconstructor
     def init_on_load(self):
@@ -156,8 +157,8 @@ class ListinoArticolo(Base, Dao):
         else:
             return ""
 
-    if (hasattr(conf, "PromoWear") and
-                getattr(conf.PromoWear, 'mod_enable') == "yes") or\
+    if (hasattr(conf, "PromoWear") and getattr(
+            conf.PromoWear, 'mod_enable') == "yes") or \
                     "PromoWear" in Environment.modulesList:
         @property
         def denominazione_gruppo_taglia(self):
@@ -285,7 +286,7 @@ class ListinoArticolo(Base, Dao):
 
     def filter_values(self, k, v):
         if k == "listinoAttuale":
-            dic ={k: ListinoArticolo.__table__.c.listino_attuale == v}
+            dic = {k: ListinoArticolo.__table__.c.listino_attuale == v}
         elif k == "idArticolo":
             dic = {k: ListinoArticolo.__table__.c.id_articolo == v}
         elif k == 'idArticoloList':
@@ -298,7 +299,7 @@ class ListinoArticolo(Base, Dao):
             dic = {k: ListinoArticolo.__table__.c.data_listino_articolo.in_(v)}
         elif k == "dataListinoArticolo":
             dic = {k: ListinoArticolo.__table__.c.data_listino_articolo == v}
-        return  dic[k]
+        return dic[k]
 
     def scontiVenditaDettaglioDel(self):
         """
@@ -324,7 +325,9 @@ class ListinoArticolo(Base, Dao):
 
         if not self.data_listino_articolo:
             self.data_listino_articolo = datetime.datetime.today()
-        check = ListinoArticolo().select(idListino=self.id_listino, idArticolo=self.id_articolo, batchSize=None)
+        check = ListinoArticolo().select(idListino=self.id_listino,
+                                         idArticolo=self.id_articolo,
+                                         batchSize=None)
         if check:
             for che in check:
                 che.listino_attuale = False
@@ -339,20 +342,18 @@ class ListinoArticolo(Base, Dao):
         self.scontiVenditaIngrossoDel()
         if sconti:
             for key,value in sconti.items():
-                if (key=="dettaglio") and (value):
+                if (key == "dettaglio") and (value):
                     for v in value:
                         v.id_listino = self.id_listino
                         v.id_articolo = self.id_articolo
                         v.data_listino_articolo = self.data_listino_articolo
                         params["session"].add(v)
-                        #self.saveAppLog(v)
-                elif (key=="ingrosso") and (value):
+                elif (key == "ingrosso") and (value):
                     for u in value:
                         u.id_listino = self.id_listino
                         u.id_articolo = self.id_articolo
                         u.data_listino_articolo = self.data_listino_articolo
                         params["session"].add(u)
-                        #self.saveAppLog(u)
         elif self.__scontiVenditaDett:
             try:
                 self.__scontiVenditaDett[0].id_listino=self.id_listino
