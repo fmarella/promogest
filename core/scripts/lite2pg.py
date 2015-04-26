@@ -177,14 +177,14 @@ elif tipodb_dest == "postgresql":
 else:
     print " DESTINAZIONE NON RICONOSCIUTA"
 
-db_dest =  SQLSoup(engine_dest)
+db_dest = SQLSoup(engine_dest)
 
 if tipodb_dest == "postgresql":
     meta_dest = MetaData()
     meta_dest_main = MetaData()
     meta_dest_main.reflect(bind=engine_dest, schema="promogest2")
     meta_dest.reflect(bind=engine_dest, schema=azienda_dest)
-    tbl_main =  [x.split(".")[1] for x in meta_dest_main.tables]
+    tbl_main = [x.split(".")[1] for x in meta_dest_main.tables]
     tbl = [x.split(".")[1] for x in meta_dest.tables]
 else:
     meta_dest = MetaData()

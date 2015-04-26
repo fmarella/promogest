@@ -99,10 +99,10 @@ class ProductFromCsv(object):
                 tid = Taglia().select(denominazione = riga["Taglia"])[0].id
                 gtids = GruppoTaglia().select(denominazione = riga["Gruppo Taglia"])
                 if gtids:
-                    gtid =  gtids[0].id
+                    gtid = gtids[0].id
                 if tid and gtid:
-                    gtt = GruppoTagliaTaglia().select(idGruppoTaglia= gtid,
-                                                    idTaglia = tid)
+                    gtt = GruppoTagliaTaglia().select(idGruppoTaglia=gtid,
+                                                      idTaglia=tid)
                     if not gtt:
                         numero_taglie = GruppoTagliaTaglia().count(idGruppoTaglia= gtid)
                         gtt = GruppoTagliaTaglia()
@@ -111,7 +111,7 @@ class ProductFromCsv(object):
                         gtt.ordine = (numero_taglie or 1) +1
                         gtt.persist()
             if "Modello" in riga and riga["Modello"]:
-                mo = Modello().select(denominazione = riga["Modello"])
+                mo = Modello().select(denominazione=riga["Modello"])
                 if not mo:
                     mm = Modello()
                     mm.denominazione = riga["Modello"]
@@ -119,7 +119,7 @@ class ProductFromCsv(object):
                     mm.persist()
 
             if "Colore" in riga and riga["Colore"]:
-                co = Colore().select(denominazione = riga["Colore"])
+                co = Colore().select(denominazione=riga["Colore"])
                 if not co:
                     c = Colore()
                     c.denominazione = riga["Colore"]
@@ -130,39 +130,40 @@ class ProductFromCsv(object):
         self.tipoArticolo = None
         self.articoloPadre = None
         self.daoArticolo = None
-        """Gets the existing Dao"""
+        # Gets the existing Dao
         self.product = product
-#        print "dissss", self.__dict__
         for key in possibleFieldsDict.keys():
             if key not in self.product.keys():
                 setattr(self, possibleFieldsDict[key], None)
             else:
                 setattr(self, possibleFieldsDict[key], self.product[key])
-        print "SELF CODICE ARTICO", self.codice_articolo
+        print("SELF CODICE ARTICO", self.codice_articolo)
         if self.codice_articolo:
             try:
                 self.daoArticolo = Articolo().select(codiceEM=self.codice_articolo)[0]
-                print "CODICE GIÀ PRESENTE NEL DATABASE"
+                print("CODICE GIÀ PRESENTE NEL DATABASE")
             except:
-                print "CODICE %s NON TROVATO" %self.codice_articolo
+                print("CODICE %s NON TROVATO" %self.codice_articolo)
 
         elif self.codice_barre_articolo:
-            daoCodiceABarre = CodiceABarreArticolo().select(codiceEM=self.codice_barre_articolo)
+            daoCodiceABarre = CodiceABarreArticolo().select(
+                codiceEM=self.codice_barre_articolo)
             if daoCodiceABarre:
                 self.daoArticolo = Articolo().getRecord(id=daoCodiceABarre[0].id_articolo)
         elif self.codice_fornitore:
-            daoFornitura = Fornitura().select(codiceArticoloFornitoreEM=self.codice_fornitore)
+            daoFornitura = Fornitura().select(
+                codiceArticoloFornitoreEM=self.codice_fornitore)
             if len(daoFornitura) == 1:
                 self.daoArticolo = Articolo().getRecord(id=daoFornitura[0].id_articolo)
-        #Non ho trovato un articolo esistente ne' come codice ne' come cbarre
-        #o cod fornitore ne istanzio uno nuovo
+        # Non ho trovato un articolo esistente ne' come codice ne' come cbarre
+        # o cod fornitore ne istanzio uno nuovo
 
         if not self.daoArticolo:
             print "ISTANZIO UN NUOVO ARTICOLO"
             self.daoArticolo = Articolo()
         if posso("PW"):
             if self.codice_padre and self.codice_articolo:
-                print "ARTICOLO PADRE"
+                print("ARTICOLO PADRE")
                 self.tipoArticolo = "FATHER"
                 self.addTagliaColoreData(tipo = self.tipoArticolo, articolo = self.daoArticolo)
                 self.articoloPadre = None
@@ -170,11 +171,14 @@ class ProductFromCsv(object):
                 print "ARTICOLO FIGLIO", self.codice_padre
                 padre = Articolo().select(codiceEM=self.codice_padre)
                 if not padre:
-                    print "ERROREEEEEEEEE  non può essere caricato un figlio senza il padre"
+                    print("ERRORE! non può essere caricato un figlio senza il padre")
                 else:
                     self.articoloPadre = padre[0]
                     self.tipoArticolo = "SON"
-                    codice = self.articoloPadre.codice + self.gruppo_taglia[0:3] + self.taglia + self.colore
+                    codice = self.articoloPadre.codice \
+                             + self.gruppo_taglia[0:3] \
+                             + self.taglia \
+                             + self.colore
                     test = Articolo().select(codiceEM= codice)
                     if test:
                         self.daoArticolo = test[0]
@@ -192,20 +196,20 @@ class ProductFromCsv(object):
         """
         artTC = None
         if articolo and articolo.id and tipo == "FATHER":
-            artTC = ArticoloTagliaColore().select(idArticolo = articolo.id)
-        elif articolo and articolo.id and articoloPadre and tipo =="SON":
-            artTC = ArticoloTagliaColore().select(idArticolo = articolo.id,
-                                            idArticoloPadre=articoloPadre.id)
+            artTC = ArticoloTagliaColore().select(idArticolo=articolo.id)
+        elif articolo and articolo.id and articoloPadre and tipo == "SON":
+            artTC = ArticoloTagliaColore().select(idArticolo=articolo.id,
+                                                  idArticoloPadre=articoloPadre.id)
 
         if artTC:
             artTC = artTC[0]
         else:
             artTC = ArticoloTagliaColore()
-            if tipo =="SON":
+            if tipo == "SON":
                 artTC.id_articolo_padre = articoloPadre.id
         #MODELLO
         if self.modello:
-            mode = Modello().select(denominazione = self.modello)
+            mode = Modello().select(denominazione=self.modello)
             artTC.id_modello = mode[0].id
         elif not self.modello:
             try:
@@ -214,32 +218,32 @@ class ProductFromCsv(object):
                 print " questo csv non ha modello"
         #ANNO
         if self.anno:
-            anno = AnnoAbbigliamento().select(denominazione = self.anno)
+            anno = AnnoAbbigliamento().select(denominazione=self.anno)
             artTC.id_anno = anno[0].id
         elif not self.anno:
             artTC.id_annno = articoloPadre.id_anno
         #GENERE
         if self.genere:
-            genere = GenereAbbigliamento().select(denominazione = self.genere.capitalize())
+            genere = GenereAbbigliamento().select(denominazione=self.genere.capitalize())
             artTC.id_genere = genere[0].id
         elif not self.genere:
             artTC.id_genere = articoloPadre.id_genere
         #GRUPPO TAGLIA
         if self.gruppo_taglia:
-            gruppo_taglia = GruppoTaglia().select(denominazione = self.gruppo_taglia)[0].id
+            gruppo_taglia = GruppoTaglia().select(denominazione=self.gruppo_taglia)[0].id
             artTC.id_gruppo_taglia = gruppo_taglia
         elif not self.gruppo_taglia:
             artTC.id_gruppo_taglia = articoloPadre.id_gruppo_taglia
         #TAGLIA
         if self.taglia:
-            taglia = Taglia().select(denominazione = self.taglia)[0].id
+            taglia = Taglia().select(denominazione=self.taglia)[0].id
             artTC.id_taglia = taglia
         #COLORE
         if self.colore:
-            artTC.id_colore = Colore().select(denominazione = self.colore)[0].id
+            artTC.id_colore = Colore().select(denominazione=self.colore)[0].id
         #STAGIONE
         if self.stagione:
-            stagione = StagioneAbbigliamento().select(denominazione = self.stagione)
+            stagione = StagioneAbbigliamento().select(denominazione=self.stagione)
             if stagione:
                 artTC.id_stagione = stagione[0].id
         elif not self.stagione:
@@ -251,8 +255,15 @@ class ProductFromCsv(object):
         """fillDaos method fills all Dao related to daoArticolo
         """
         if posso("PW") and self.tipoArticolo == "SON":
-            self.daoArticolo.codice = self.articoloPadre.codice + self.gruppo_taglia[0:3] + self.taglia + self.colore
-            self.daoArticolo.denominazione = self.articoloPadre.denominazione + ' ' + self.taglia + ' ' + self.colore
+            self.daoArticolo.codice = self.articoloPadre.codice \
+                                      + self.gruppo_taglia[0:3] \
+                                      + self.taglia \
+                                      + self.colore
+            self.daoArticolo.denominazione = self.articoloPadre.denominazione \
+                                             + ' ' \
+                                             + self.taglia \
+                                             + ' ' \
+                                             + self.colore
             self.codice_articolo = self.articoloPadre
         else:
             if self.codice_articolo is None or self.codice_articolo == "None":
@@ -263,17 +274,18 @@ class ProductFromCsv(object):
                 self.daoArticolo.denominazione = str(self.denominazione_articolo)
             else:
                 if not self.daoArticolo.denominazione:
-                    messageInfo(msg= "ATTENZIONE DESCRIZIONE MANCANTE\nIN INSERIMENTO NUOVO ARTICOLO %s" %str(self.codice_barre_articolo))
+                    messageInfo(msg="ATTENZIONE DESCRIZIONE MANCANTE\nIN INSERIMENTO NUOVO ARTICOLO %s" %str(self.codice_barre_articolo))
 #                    raise NameError("ERRORE DESCRIZIONE MANCANTE")
                     return
 
 
 #        print "STO PER SALVARE ", self.daoArticolo.denominazione
-        #families
+        # families
         id_famiglia = None
         if self.famiglia_articolo is None:
             self.famiglia_articolo_id = int(self.defaults['Famiglia'])
-            self.famiglia_articolo = FamigliaArticolo().getRecord(id=self.famiglia_articolo_id)
+            self.famiglia_articolo = FamigliaArticolo().getRecord(
+                id=self.famiglia_articolo_id)
             id_famiglia = self.famiglia_articolo.id
 
         else:
@@ -282,10 +294,10 @@ class ProductFromCsv(object):
             for f in self._families:
                 code_list.append(f.codice)
                 if self.famiglia_articolo in (f.denominazione_breve,
-                                            f.denominazione, f.codice, f.id):
+                                              f.denominazione, f.codice, f.id):
                     id_famiglia = f.id
                     break
-            if  id_famiglia is None:
+            if id_famiglia is None:
                 family_code = self.famiglia_articolo[:4]
                 if len(self._families) > 0:
                     ind = 0
@@ -303,11 +315,12 @@ class ProductFromCsv(object):
                 id_famiglia = daoFamiglia.id
                 self._families.append(daoFamiglia)
         self.daoArticolo.id_famiglia_articolo = id_famiglia
-        #categories
+        # categories
         id_categoria = None
         if self.categoria_articolo is None:
             self.categoria_articolo_id = self.defaults['Categoria']
-            self.categoria_articolo = CategoriaArticolo().getRecord(id=self.categoria_articolo_id)
+            self.categoria_articolo = CategoriaArticolo().getRecord(
+                id=self.categoria_articolo_id)
             id_categoria = self.categoria_articolo.id
         else:
             self._categories = CategoriaArticolo().select(batchSize=None)
@@ -324,7 +337,7 @@ class ProductFromCsv(object):
                     for category in category_list:
                         if category_short_name == category[:7]:
                             ind +=1
-                    category_short_name = category_short_name+'/'+str(ind)
+                    category_short_name = category_short_name + '/' + str(ind)
                 daoCategoria = CategoriaArticolo()
                 daoCategoria.denominazione_breve = category_short_name
                 daoCategoria.denominazione = self.categoria_articolo
@@ -332,7 +345,7 @@ class ProductFromCsv(object):
                 id_categoria = daoCategoria.id
                 self._categories.append(daoCategoria)
         self.daoArticolo.id_categoria_articolo = id_categoria
-        #IVA
+        # IVA
         id_aliquota_iva = None
         if self.aliquota_iva is None:
             self.aliquota_iva_id = self.defaults['Aliquota iva']
@@ -341,15 +354,16 @@ class ProductFromCsv(object):
         else:
             self._vats = AliquotaIva().select(batchSize=None)
             for v in self._vats:
-                if self.aliquota_iva.lower() in (v.denominazione_breve.lower(),
-                                                v.denominazione.lower()) or\
-                            int(str(self.aliquota_iva).replace('%', '') or 20) == int(v.percentuale):
+                if self.aliquota_iva.lower() in (
+                        v.denominazione_breve.lower(),
+                        v.denominazione.lower()) or\
+                        int(str(self.aliquota_iva).replace('%', '') or 20) == int(v.percentuale):
                     id_aliquota_iva = v.id
                     break
             if id_aliquota_iva is None:
                 self.aliquota_iva = str(self.aliquota_iva).replace('%', '')
                 daoAliquotaIva = AliquotaIva()
-                daoAliquotaIva.denominazione = 'ALIQUOTA '+ self.aliquota_iva +'%'
+                daoAliquotaIva.denominazione = 'ALIQUOTA ' + self.aliquota_iva + '%'
                 daoAliquotaIva.denominazione_breve = self.aliquota_iva + '%'
                 daoAliquotaIva.id_tipo = 1
                 daoAliquotaIva.percentuale = Decimal(self.aliquota_iva)
@@ -357,7 +371,7 @@ class ProductFromCsv(object):
                 id_aliquota_iva = daoAliquotaIva.id
                 self._vats.append(daoAliquotaIva)
         self.daoArticolo.id_aliquota_iva = id_aliquota_iva
-        #UNITA BASE
+        # UNITA BASE
         id_unita_base = None
         if  self.unita_base is None:
             self.unita_base_id = self.defaults['Unita base']
@@ -375,13 +389,12 @@ class ProductFromCsv(object):
                     break
             if id_unita_base is None:
                 self.unita_base = UnitaBase().select(denominazione='Pezzi',
-                                                            batchSize=None)[0]
+                                                     batchSize=None)[0]
                 id_unita_base = self.unita_base.id
         self.daoArticolo.id_unita_base = id_unita_base
         self.daoArticolo.produttore = self.produttore or ''
         self.daoArticolo.cancellato = False
         self.daoArticolo.sospeso = False
-#        print "PTIMA DEL PERSIT", self.daoArticolo.__dict__
         self.daoArticolo.persist()
         product_id = self.daoArticolo.id
 
@@ -389,16 +402,16 @@ class ProductFromCsv(object):
         if self.codice_barre_articolo is not None:
             self.codice_barre_articolo = str(self.codice_barre_articolo).strip()
             try:
-                oldCodeBar= CodiceABarreArticolo().select(idArticolo=product_id)
+                oldCodeBar = CodiceABarreArticolo().select(idArticolo=product_id)
                 if oldCodeBar:
                     for codes in oldCodeBar:
                         codes.primario = False
                         codes.persist()
             except:
                 pass
-            barCode = CodiceABarreArticolo().\
-                                select(codiceEM=self.codice_barre_articolo,
-                                batchSize=None)
+            barCode = CodiceABarreArticolo().select(
+                codiceEM=self.codice_barre_articolo,
+                batchSize=None)
             if len(barCode) > 0:
                 daoBarCode = CodiceABarreArticolo().getRecord(id=barCode[0].id)
                 daoBarCode.id_articolo = product_id
@@ -411,17 +424,16 @@ class ProductFromCsv(object):
                 daoBarCode.primario = True
                 daoBarCode.persist()
 
-        #price-list--> product
         decimalSymbol = self.PLModel._decimalSymbol
-        if (self.prezzo_vendita_non_ivato is not None or \
-            self.prezzo_acquisto_non_ivato is not None or \
-            self.prezzo_acquisto_ivato is not None or \
+        if (self.prezzo_vendita_non_ivato is not None or
+            self.prezzo_acquisto_non_ivato is not None or
+            self.prezzo_acquisto_ivato is not None or
             self.prezzo_vendita_ivato is not None):
             try:
-                daoPriceListProduct = ListinoArticolo().\
-                                    select(idListino=self.price_list_id,
-                                            idArticolo=product_id,
-                                            batchSize=None)[0]
+                daoPriceListProduct = ListinoArticolo().select(
+                    idListino=self.price_list_id,
+                    idArticolo=product_id,
+                    batchSize=None)[0]
             except:
                 daoPriceListProduct = ListinoArticolo()
                 daoPriceListProduct.id_articolo = product_id
@@ -446,14 +458,14 @@ class ProductFromCsv(object):
 
             if self.sconto_vendita_ingrosso is not None \
                 and str(self.sconto_vendita_ingrosso).strip() != "0" \
-                and str(self.sconto_vendita_ingrosso).strip() !="":
+                and str(self.sconto_vendita_ingrosso).strip() != "":
                 self.sconto_vendita_ingrosso = self.sanitizer(self.sconto_vendita_ingrosso)
                 sconti_ingrosso[0].valore = mN(self.sconto_vendita_ingrosso)
                 sconti_ingrosso[0].tipo_sconto = 'percentuale'
                 daoPriceListProduct.sconto_vendita_ingrosso = sconti_ingrosso
             if self.sconto_vendita_dettaglio and \
                 str(self.sconto_vendita_dettaglio).strip() != "0" and \
-                str(self.sconto_vendita_dettaglio).strip() !="":
+                str(self.sconto_vendita_dettaglio).strip() != "":
 
                 self.sconto_vendita_dettaglio = self.sanitizer(self.sconto_vendita_dettaglio)
                 sconti_dettaglio[0].valore = mN(self.sconto_vendita_dettaglio)
@@ -462,41 +474,40 @@ class ProductFromCsv(object):
 
             if self.prezzo_acquisto_non_ivato is not None and \
                 str(self.prezzo_acquisto_non_ivato).strip() != "0" and \
-                str(self.prezzo_acquisto_non_ivato).strip() !="":
+                str(self.prezzo_acquisto_non_ivato).strip() != "":
                 prezzo = self.sanitizer(self.prezzo_acquisto_non_ivato)
 
                 daoPriceListProduct.ultimo_costo = mN(prezzo)
             elif self.prezzo_acquisto_ivato is not None and \
                     str(self.prezzo_acquisto_ivato).strip() != "0" and \
-                    str(self.prezzo_acquisto_ivato).strip() !="":
+                    str(self.prezzo_acquisto_ivato).strip() != "":
                 prezzo = self.sanitizer(self.prezzo_acquisto_ivato)
                 self.aliquota_iva.percentuale = self.sanitizer(self.aliquota_iva.percentuale)
                 daoPriceListProduct.ultimo_costo = mN(calcolaPrezzoIva(mN(prezzo), -1 * (mN(self.aliquota_iva.percentuale))))
             else:
                 daoPriceListProduct.ultimo_costo = 0
-#            print " QUSTNO NON VA BEEN ", daoPriceListProduct.__dict__
             daoPriceListProduct.persist()
 
         # Fornitura
-        daoFornitura = Fornitura().select(idFornitore=self.fornitore,
-                                                idArticolo=self.daoArticolo.id,
-                                                daDataPrezzo=self.dataListino,
-                                                aDataPrezzo=self.dataListino,
-                                                batchSize=None)
-        if len(daoFornitura) == 0:
-            daoFornitura = Fornitura()
-            daoFornitura.prezzo_netto = prezzo or 0
-            daoFornitura.prezzo_lordo = prezzo or 0
-            daoFornitura.id_fornitore = self.fornitore
-            daoFornitura.id_articolo = self.daoArticolo.id
+        daofornitura = Fornitura().select(idFornitore=self.fornitore,
+                                          idArticolo=self.daoArticolo.id,
+                                          daDataPrezzo=self.dataListino,
+                                          aDataPrezzo=self.dataListino,
+                                          batchSize=None)
+        if len(daofornitura) == 0:
+            daofornitura = Fornitura()
+            daofornitura.prezzo_netto = prezzo or 0
+            daofornitura.prezzo_lordo = prezzo or 0
+            daofornitura.id_fornitore = self.fornitore
+            daofornitura.id_articolo = self.daoArticolo.id
             try:
-                daoFornitura.percentuale_iva = Decimal(str(self.aliquota_iva.percentuale))
+                daofornitura.percentuale_iva = Decimal(str(self.aliquota_iva.percentuale))
             except:
-                daoFornitura.percentuale_iva = Decimal(str(self.aliquota_iva))
-            daoFornitura.data_prezzo = self.dataListino
-            daoFornitura.codice_articolo_fornitore = self.codice_fornitore
-            daoFornitura.fornitore_preferenziale = True
-            daoFornitura.persist()
+                daofornitura.percentuale_iva = Decimal(str(self.aliquota_iva))
+            daofornitura.data_prezzo = self.dataListino
+            daofornitura.codice_articolo_fornitore = self.codice_fornitore
+            daofornitura.fornitore_preferenziale = True
+            daofornitura.persist()
         self.product = None
 
     def checkDecimalSymbol(self, number, symbol):

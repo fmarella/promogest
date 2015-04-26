@@ -53,7 +53,7 @@ class GestioneChiusuraFiscale(GladeWidget):
         if hasattr(Environment.conf, "VenditaDettaglio"):
             if hasattr(Environment.conf.VenditaDettaglio, "magazzino"):
                 findComboboxRowFromStr(self.chiusura_id_magazzino_combobox,
-                                       Environment.conf.VenditaDettaglio.magazzino,2)
+                                       Environment.conf.VenditaDettaglio.magazzino, 2)
         elif setconf("VenditaDettaglio", "magazzino_vendita"):
             findComboboxRowFromId(self.chiusura_id_magazzino_combobox,
                                   setconf("VenditaDettaglio", "magazzino_vendita"))
@@ -61,7 +61,7 @@ class GestioneChiusuraFiscale(GladeWidget):
         if hasattr(Environment.conf, "VenditaDettaglio"):
             if hasattr(Environment.conf.VenditaDettaglio, "puntocassa"):
                 findComboboxRowFromStr(self.chiusura_id_pos_combobox,
-                                       Environment.conf.VenditaDettaglio.puntocassa,2)
+                                       Environment.conf.VenditaDettaglio.puntocassa, 2)
         elif setconf("VenditaDettaglio", "punto_cassa"):
             findComboboxRowFromId(self.chiusura_id_pos_combobox,
                                   setconf("VenditaDettaglio", "punto_cassa"))

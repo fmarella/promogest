@@ -47,16 +47,16 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           {% endif %}
         <CAP>{{cedente.sede_cap}}</CAP>
         <Comune>{{cedente.sede_comune}}</Comune>
-        <Provincia>{{cedente.sede_provincia}}</Provincia>
-        <Nazione>{{cedente.sede_nazione}}</Nazione>
+        <Provincia>{{cedente.sede_provincia[:2]}}</Provincia>
+        <Nazione>{{cedente.sede_nazione[:2]}}</Nazione>
       </Sede>
       {% if cedente.stabile_indirizzo %}
       <StabileOrganizzazione>
         <Indirizzo>{{cedente.stabile_indirizzo}}</Indirizzo>
         <CAP>{{cedente.stabile_cap}}</CAP>
         <Comune>{{cedente.stabile_comune}}</Comune>
-        <Provincia>{{cedente.stabile_provincia}}</Provincia>
-        <Nazione>{{cedente.stabile_nazione}}</Nazione>
+        <Provincia>{{cedente.stabile_provincia[:2]}}</Provincia>
+        <Nazione>{{cedente.stabile_nazione[:2]}}</Nazione>
       </StabileOrganizzazione>
       {% endif %}
       {% if cedente.iscrizioneREA_numeroREA %}
@@ -99,8 +99,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
           {% endif %}
         <CAP>{{committente.sede_cap}}</CAP>
         <Comune>{{committente.sede_comune}}</Comune>
-        <Provincia>{{committente.sede_provincia}}</Provincia>
-        <Nazione>{{committente.sede_nazione}}</Nazione>
+        <Provincia>{{committente.sede_provincia[:2]}}</Provincia>
+        <Nazione>{{committente.sede_nazione[:2]}}</Nazione>
       </Sede>
         {% endif %}
     </CessionarioCommittente>
