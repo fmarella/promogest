@@ -297,7 +297,7 @@ def handleEngine(schema= None):
             listen(engine, 'connect', my_on_connect)
         else:
             engine = create_engine("sqlite:///" + startdir() + "db", listeners=[SetTextFactory()], proxy=MyProxy())
-    elif tipodb =="postgresql":
+    elif tipodb == "postgresql":
         from promogest.EnvUtils import *
         mainSchema = "promogest2"
         engine = pg8000()
@@ -308,7 +308,7 @@ def handleEngine(schema= None):
         if not engine:
             engine = psycopg2old()
 
-    elif tipodb =="mysql":
+    elif tipodb == "mysql":
         from sqlalchemy.pool import NullPool
         if preEnv.buildSchema:
             database = preEnv.buildSchema
@@ -327,7 +327,6 @@ def handleEngine(schema= None):
 
     if not engine:
         raise RuntimeError("Non è stato trovato possibile creare un ENGINE per il DB")
-    #if not preEnv.web:
     engine.echo = echosa
     # engine.echo = True
     return engine
@@ -368,21 +367,21 @@ def delete_pickle():
         promogestDir_da_conf = None
         return
     if meta_pickle:
-        if os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
-            os.remove(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()))
-        if os.path.exists(str(os.path.join(promogestDir_da_conf.replace("_",""),meta_pickle_da_conf.replace("_","")).strip())):
-            os.remove(str(os.path.join(promogestDir_da_conf.replace("_",""),meta_pickle_da_conf.replace("_","")).strip()))
+        if os.path.exists(str(os.path.join(promogestDir.replace("_", ""),meta_pickle.replace("_","")).strip())):
+            os.remove(str(os.path.join(promogestDir.replace("_", ""),meta_pickle.replace("_","")).strip()))
+        if os.path.exists(str(os.path.join(promogestDir_da_conf.replace("_", ""),meta_pickle_da_conf.replace("_", "")).strip())):
+            os.remove(str(os.path.join(promogestDir_da_conf.replace("_", ""),meta_pickle_da_conf.replace("_", "")).strip()))
             print( "\n\n\n\nHO CANCELLATO IL FILE PICKLE QUASI SICURAMENTE BISOGNA RILANCIARE\n\n\n\n")
             restart_program()
     else:
-        meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
+        meta_pickle = azienda + "-meta.pickle" + sys.version[:1]
         if os.path.exists(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip())):
             os.remove(str(os.path.join(promogestDir.replace("_",""),meta_pickle.replace("_","")).strip()))
             restart_program()
 
 def usePickleToMeta():
     if azienda:
-        meta_pickle = azienda + "-meta.pickle"+sys.version[:1]
+        meta_pickle = azienda + "-meta.pickle" + sys.version[:1]
         promogestDir = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + azienda + os.sep
         meta_pickle_da_conf = main_conf.Database.azienda + "-meta.pickle"+sys.version[:1]
         promogestDir_da_conf = os.path.expanduser('~') + os.sep + "promogest2" + os.sep + main_conf.Database.azienda + os.sep
@@ -397,13 +396,13 @@ def usePickleToMeta():
                 meta = pickle_load(f)
                 meta.bind = engine
             except:
-                print( "DEVO CANCELLARE IL PICKLE PERCHé NON RIESCO A TROVARLO O LEGGERLO")
+                print("DEVO CANCELLARE IL PICKLE PERCHé NON RIESCO A TROVARLO O LEGGERLO")
                 delete_pickle()
-            print( "USO META PICKLE FAST")
+            print("USO META PICKLE FAST")
             if not meta:
                 meta = MetaData(engine)
     else:
-        print( "USO META NORMALE")
+        print("USO META NORMALE")
         meta = MetaData(engine)
     return meta
 meta = usePickleToMeta()
@@ -419,13 +418,13 @@ if tipo_eng=="postgresql":
     schema = azienda
 
 params = {
-         'engine': engine,
-         'mainSchema': mainSchema,
-         'schema': schema,
-         'metadata': meta,
-         'session': session,
-         "tipo_db": tipodb,
-         'usernameLoggedList': userdata
+    'engine': engine,
+    'mainSchema': mainSchema,
+    'schema': schema,
+    'metadata': meta,
+    'session': session,
+    "tipo_db": tipodb,
+    'usernameLoggedList': userdata
         }
 
 if params['tipo_db'] == 'postgresql':

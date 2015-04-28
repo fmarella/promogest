@@ -56,8 +56,8 @@ class ProductFromCsv(object):
     promogest-compatible dao product, ListinoArticolo and Fornitura"""
 
     def __init__(self, listaRighe=None,
-                    PLModel=None, promoPriceList=None,
-                    idfornitore=None, dataListino=None, createData=False):
+                 PLModel=None, promoPriceList=None,
+                 idfornitore=None, dataListino=None, createData=False):
         self.PLModel = PLModel
         self.listaRighe = listaRighe
         self.promoPriceList = promoPriceList or None
@@ -80,35 +80,33 @@ class ProductFromCsv(object):
                     riga["Gruppo Taglia"] and \
                     "Taglia" in riga and\
                     riga["Taglia"] == "":
-                gruppo_taglia = GruppoTaglia().select(denominazione = riga["Gruppo Taglia"])
+                gruppo_taglia = GruppoTaglia().select(denominazione=riga["Gruppo Taglia"])
                 if not gruppo_taglia:
                     a = GruppoTaglia()
                     a.denominazione = riga["Gruppo Taglia"]
                     a.denominazione_breve = riga["Gruppo Taglia"]
                     a.persist()
-            elif "Gruppo Taglia" in riga and \
-                        riga["Gruppo Taglia"] and\
-                        "Taglia" in riga and\
-                        riga["Taglia"]:
-                _taglia = Taglia().select(denominazione = riga["Taglia"])
+            elif "Gruppo Taglia" in riga and riga["Gruppo Taglia"] and \
+                "Taglia" in riga and riga["Taglia"]:
+                _taglia = Taglia().select(denominazione=riga["Taglia"])
                 if not _taglia:
                     t = Taglia()
                     t.denominazione = riga["Taglia"]
                     t.denominazione_breve = riga["Taglia"]
                     t.persist()
-                tid = Taglia().select(denominazione = riga["Taglia"])[0].id
-                gtids = GruppoTaglia().select(denominazione = riga["Gruppo Taglia"])
+                tid = Taglia().select(denominazione=riga["Taglia"])[0].id
+                gtids = GruppoTaglia().select(denominazione=riga["Gruppo Taglia"])
                 if gtids:
                     gtid = gtids[0].id
                 if tid and gtid:
                     gtt = GruppoTagliaTaglia().select(idGruppoTaglia=gtid,
                                                       idTaglia=tid)
                     if not gtt:
-                        numero_taglie = GruppoTagliaTaglia().count(idGruppoTaglia= gtid)
+                        numero_taglie = GruppoTagliaTaglia().count(idGruppoTaglia=gtid)
                         gtt = GruppoTagliaTaglia()
                         gtt.id_gruppo_taglia = gtid
                         gtt.id_taglia = tid
-                        gtt.ordine = (numero_taglie or 1) +1
+                        gtt.ordine = (numero_taglie or 1) + 1
                         gtt.persist()
             if "Modello" in riga and riga["Modello"]:
                 mo = Modello().select(denominazione=riga["Modello"])
@@ -165,7 +163,8 @@ class ProductFromCsv(object):
             if self.codice_padre and self.codice_articolo:
                 print("ARTICOLO PADRE")
                 self.tipoArticolo = "FATHER"
-                self.addTagliaColoreData(tipo = self.tipoArticolo, articolo = self.daoArticolo)
+                self.addTagliaColoreData(tipo=self.tipoArticolo,
+                                         articolo=self.daoArticolo)
                 self.articoloPadre = None
             elif self.codice_padre and not self.codice_articolo:
                 print "ARTICOLO FIGLIO", self.codice_padre
@@ -179,20 +178,19 @@ class ProductFromCsv(object):
                              + self.gruppo_taglia[0:3] \
                              + self.taglia \
                              + self.colore
-                    test = Articolo().select(codiceEM= codice)
+                    test = Articolo().select(codiceEM=codice)
                     if test:
                         self.daoArticolo = test[0]
-                    self.addTagliaColoreData(tipo = self.tipoArticolo,
-                                        articoloPadre=self.articoloPadre,
-                                        articolo = self.daoArticolo)
+                    self.addTagliaColoreData(tipo=self.tipoArticolo,
+                                             articoloPadre=self.articoloPadre,
+                                             articolo=self.daoArticolo)
             elif not self.codice_padre and self.codice_articolo:
                 print "ARTICOLO NORMALE"
 
         self.fillDaos()
 
-    def addTagliaColoreData(self, tipo =None, articolo=None, articoloPadre=None):
-        """
-        modello, genere, colore, gruppo taglia, taglia, stagione, anno
+    def addTagliaColoreData(self, tipo=None, articolo=None, articoloPadre=None):
+        """ modello, genere, colore, gruppo taglia, taglia, stagione, anno
         """
         artTC = None
         if articolo and articolo.id and tipo == "FATHER":
@@ -207,7 +205,7 @@ class ProductFromCsv(object):
             artTC = ArticoloTagliaColore()
             if tipo == "SON":
                 artTC.id_articolo_padre = articoloPadre.id
-        #MODELLO
+        # MODELLO
         if self.modello:
             mode = Modello().select(denominazione=self.modello)
             artTC.id_modello = mode[0].id
@@ -216,32 +214,32 @@ class ProductFromCsv(object):
                 artTC.id_modello = articoloPadre.id_modello
             except:
                 print " questo csv non ha modello"
-        #ANNO
+        # ANNO
         if self.anno:
             anno = AnnoAbbigliamento().select(denominazione=self.anno)
             artTC.id_anno = anno[0].id
         elif not self.anno:
             artTC.id_annno = articoloPadre.id_anno
-        #GENERE
+        # GENERE
         if self.genere:
             genere = GenereAbbigliamento().select(denominazione=self.genere.capitalize())
             artTC.id_genere = genere[0].id
         elif not self.genere:
             artTC.id_genere = articoloPadre.id_genere
-        #GRUPPO TAGLIA
+        # GRUPPO TAGLIA
         if self.gruppo_taglia:
             gruppo_taglia = GruppoTaglia().select(denominazione=self.gruppo_taglia)[0].id
             artTC.id_gruppo_taglia = gruppo_taglia
         elif not self.gruppo_taglia:
             artTC.id_gruppo_taglia = articoloPadre.id_gruppo_taglia
-        #TAGLIA
+        # TAGLIA
         if self.taglia:
             taglia = Taglia().select(denominazione=self.taglia)[0].id
             artTC.id_taglia = taglia
-        #COLORE
+        # COLORE
         if self.colore:
             artTC.id_colore = Colore().select(denominazione=self.colore)[0].id
-        #STAGIONE
+        # STAGIONE
         if self.stagione:
             stagione = StagioneAbbigliamento().select(denominazione=self.stagione)
             if stagione:
@@ -275,11 +273,8 @@ class ProductFromCsv(object):
             else:
                 if not self.daoArticolo.denominazione:
                     messageInfo(msg="ATTENZIONE DESCRIZIONE MANCANTE\nIN INSERIMENTO NUOVO ARTICOLO %s" %str(self.codice_barre_articolo))
-#                    raise NameError("ERRORE DESCRIZIONE MANCANTE")
                     return
 
-
-#        print "STO PER SALVARE ", self.daoArticolo.denominazione
         # families
         id_famiglia = None
         if self.famiglia_articolo is None:

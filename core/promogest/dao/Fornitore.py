@@ -22,11 +22,8 @@
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from promogest.Environment import *
-
 from promogest.dao.Dao import Dao, Base
-# from promogest.dao.PersonaGiuridica import PersonaGiuridica_
 from promogest.dao.CategoriaFornitore import CategoriaFornitore
-from promogest.dao.daoContatti.Contatto import Contatto
 from promogest.dao.DaoUtils import codeIncrement, getRecapitiFornitore
 
 from data.fornitore import t_fornitore
@@ -42,17 +39,18 @@ class Fornitore(Base, Dao):
     categoria_fornitore = relationship("CategoriaFornitore", backref="fornitore")
 
     __mapper_args__ = {
-        'order_by' : t_persona_giuridica.c.codice
+        'order_by': t_persona_giuridica.c.codice
     }
 
-    def __init__(self, req=None):
+    def __init__(self):
         Dao.__init__(self, entity=self)
 
     @property
     def categoria(self):
         if self.categoria_fornitore:
             return self.categoria_fornitore.denominazione
-        else: return ""
+        else:
+            return ""
 
     @property
     def cellulare_principale(self):
@@ -61,35 +59,38 @@ class Fornitore(Base, Dao):
                 if reca.tipo_recapito =="Cellulare":
                     return reca.recapito
         return ""
+
     @property
     def telefono_principale(self):
         if self.id:
             for reca in getRecapitiFornitore(self.id):
-                if reca.tipo_recapito =="Telefono":
+                if reca.tipo_recapito == "Telefono":
                     return reca.recapito
         return ""
+
     @property
     def email_principale(self):
         if self.id:
             for reca in getRecapitiFornitore(self.id):
-                if reca.tipo_recapito =="Email":
+                if reca.tipo_recapito == "Email":
                     return reca.recapito
         return ""
+
     @property
     def fax_principale(self):
         if self.id:
             for reca in getRecapitiFornitore(self.id):
-                if reca.tipo_recapito =="Fax":
+                if reca.tipo_recapito == "Fax":
                     return reca.recapito
         return ""
+
     @property
     def sito_principale(self):
         if self.id:
             for reca in getRecapitiFornitore(self.id):
-                if reca.tipo_recapito =="Sito":
+                if reca.tipo_recapito == "Sito":
                     return reca.recapito
         return ""
-
 
     def delete(self):
         if self.categoria_fornitore:
@@ -101,8 +102,7 @@ class Fornitore(Base, Dao):
         session.delete(self)
         session.commit()
 
-
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
         if k == 'codice':
             dic = {k: t_persona_giuridica.c.codice.ilike("%"+v+"%")}
         elif k == 'codicesatto':
@@ -112,25 +112,28 @@ class Fornitore(Base, Dao):
         elif k == 'insegna':
             dic = {k: t_persona_giuridica.c.insegna.ilike("%"+v+"%")}
         elif k == 'idPagamento':
-            dic = {k : t_fornitore.c.id_pagamento == v}
+            dic = {k: t_fornitore.c.id_pagamento == v}
         elif k == 'cognomeNome':
-            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),t_persona_giuridica.c.nome.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),
+                          t_persona_giuridica.c.nome.ilike("%"+v+"%"))}
         elif k == 'localita':
-            dic = {k: or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.sede_operativa_localita.ilike("%"+v+"%"),
+                          t_persona_giuridica.c.sede_legale_localita.ilike("%"+v+"%"))}
         elif k == 'provincia':
-            dic = {k: or_(t_persona_giuridica.c.sede_operativa_provincia.ilike("%"+v+"%"), t_persona_giuridica.c.sede_legale_provincia.ilike("%"+v+"%"))}
+            dic = {k: or_(t_persona_giuridica.c.sede_operativa_provincia.ilike("%"+v+"%"),
+                          t_persona_giuridica.c.sede_legale_provincia.ilike("%"+v+"%"))}
         elif k == 'partitaIva':
             dic = {k: t_persona_giuridica.c.partita_iva.ilike("%"+v+"%")}
         elif k == 'codiceFiscale':
             dic = {k: t_persona_giuridica.c.codice_fiscale.ilike("%"+v+"%")}
         elif k == 'idCategoria':
-            dic = {k: t_fornitore.c.id_categoria_fornitore==v}
+            dic = {k: t_fornitore.c.id_categoria_fornitore == v}
         elif k == 'fullsearch':
             dic = {k: or_(t_persona_giuridica.c.codice.ilike("%"+v+"%"),
-                      t_persona_giuridica.c.ragione_sociale.ilike( "%" + v + "%"),
+                          t_persona_giuridica.c.ragione_sociale.ilike("%" + v + "%"),
                       or_(t_persona_giuridica.c.cognome.ilike("%"+v+"%"),
-                    t_persona_giuridica.c.nome.ilike("%"+v+"%")),
-                      or_( t_persona_giuridica.c.sede_operativa_localita.ilike(
+                          t_persona_giuridica.c.nome.ilike("%"+v+"%")),
+                      or_(t_persona_giuridica.c.sede_operativa_localita.ilike(
                               "%" + v + "%"),
                            t_persona_giuridica.c.sede_legale_localita.ilike(
                               "%" + v + "%")),
@@ -170,7 +173,7 @@ def getNuovoCodiceFornitore():
         pass
     return codice
 
-if tipodb=="sqlite":
+if tipodb == "sqlite":
     from promogest.dao.Pagamento import Pagamento
     a = session.query(Pagamento.id).all()
     b = session.query(Fornitore.id_pagamento).all()

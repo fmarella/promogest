@@ -34,9 +34,9 @@ from promogest.dao.Fornitore import Fornitore
 class Fornitura(Base, Dao):
     try:
         __table__ = Table('fornitura',
-                    params['metadata'],
-                    schema=params['schema'],
-                    autoload=True)
+                          params['metadata'],
+                          schema=params['schema'],
+                          autoload=True)
     except:
         from data.personaGiuridica import t_persona_giuridica
         from data.fornitore import t_fornitore
@@ -47,18 +47,21 @@ class Fornitura(Base, Dao):
     sconto_fornitura = relationship("ScontoFornitura", backref="fornitura")
     forni = relationship("Fornitore")
 
-    def __init__(self, req=None):
+    def __init__(self):
         Dao.__init__(self, entity=self)
         self.__scontiFornitura = None
 
     def sconti():
         doc = "The sconti property."
+
         def fget(self):
             self.__dbScontiFornitura = self.sconto_fornitura
             self.__scontiFornitura = self.__dbScontiFornitura[:]
             return self.__scontiFornitura
+
         def fset(self, value):
             self.__scontiFornitura = value
+
         def fdel(self):
             del self._scontiFornitura
         return locals()
@@ -89,58 +92,76 @@ class Fornitura(Base, Dao):
         if self.multi:
             return self.multi.denominazione_breve or ""
 
+    if hasattr(conf, "PromoWear") and getattr(conf.PromoWear, 'mod_enable') == "yes":
 
-    if hasattr(conf, "PromoWear") and getattr(conf.PromoWear,'mod_enable')=="yes":
         @property
         def denominazione_gruppo_taglia(self):
-            if self.arti:return self.arti.denominazione_gruppo_taglia
+            if self.arti:
+                return self.arti.denominazione_gruppo_taglia
 
         def _id_articolo_padre(self):
-            if self.arti:return self.arti.id_articolo_padre
-        id_articolo_padre_taglia_colore=property(_id_articolo_padre)
+            if self.arti:
+                return self.arti.id_articolo_padre
+
+        id_articolo_padre_taglia_colore = property(_id_articolo_padre)
         id_articolo_padre = property(_id_articolo_padre)
 
         @property
         def id_gruppo_taglia(self):
-            if self.arti:return self.arti.id_gruppo_taglia
+            if self.arti:
+                return self.arti.id_gruppo_taglia
+
         @property
         def id_genere(self):
-            if self.arti:return self.arti.id_genere
+            if self.arti:
+                return self.arti.id_genere
+
         @property
         def id_stagione(self):
-            if self.arti:return self.arti.id_stagione
+            if self.arti:
+                return self.arti.id_stagione
+
         @property
         def id_anno(self):
-            if self.arti:return self.arti.id_anno
+            if self.arti:
+                return self.arti.id_anno
+
         @property
         def denominazione_taglia(self):
-            if self.arti: return self.arti.denominazione_taglia
+            if self.arti:
+                return self.arti.denominazione_taglia
+
         @property
         def denominazione_colore(self):
-            if self.arti: return self.arti.denominazione_colore
+            if self.arti:
+                return self.arti.denominazione_colore
+
         @property
         def anno(self):
-            if self.arti: return self.arti.anno
+            if self.arti:
+                return self.arti.anno
 
         @property
         def stagione(self):
-            if self.arti: return self.arti.stagione
+            if self.arti:
+                return self.arti.stagione
 
         @property
         def genere(self):
-            if self.arti:return self.arti.genere
+            if self.arti:
+                return self.arti.genere
 
-    def filter_values(self,k,v):
+    def filter_values(self, k, v):
         if k == 'codiceArticoloFornitore':
             dic = {k: Fornitura.__table__.c.codice_articolo_fornitore.ilike("%"+v+"%")}
         elif k == 'codiceArticoloFornitoreEM' or k == "codiceArticoloFornitoreEsatto":
             dic = {k: Fornitura.__table__.c.codice_articolo_fornitore == v}
         elif k == 'idFornitore':
-            dic= {k: Fornitura.__table__.c.id_fornitore ==v}
+            dic = {k: Fornitura.__table__.c.id_fornitore == v}
         elif k == 'idFornitoreList':
-            dic= {k: Fornitura.__table__.c.id_fornitore.in_(v)}
+            dic = {k: Fornitura.__table__.c.id_fornitore.in_(v)}
         elif k == 'idArticolo':
-            dic = {k: Fornitura.__table__.c.id_articolo==v}
+            dic = {k: Fornitura.__table__.c.id_articolo == v}
         elif k == 'idArticoloList':
             dic = {k: Fornitura.__table__.c.id_articolo.in_(v)}
         elif k == 'daDataPrezzo':
@@ -162,7 +183,7 @@ class Fornitura(Base, Dao):
         return dic[k]
 
     def scontiFornituraDel(self, idDao):
-        aa = ScontoFornitura().select(idFornitura = idDao.id, batchSize=None)
+        aa = ScontoFornitura().select(idFornitura=idDao.id, batchSize=None)
         if aa:
             for a in aa:
                 session.delete(a)
@@ -170,7 +191,7 @@ class Fornitura(Base, Dao):
 
     def persist(self):
         try:
-            session.add (self)
+            session.add(self)
             session.commit()
             self.scontiFornituraDel(self)
             if self.__scontiFornitura is not None:
