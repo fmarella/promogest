@@ -61,6 +61,10 @@ from promogest.lib.utils import timeit , messageInfo
  di partenza ha promowear o promoShop attivi. ...
  Serve un sistema che richiami il dao e aggiunga le tabelle al volo
 
+
+ ATTENZIONE: Ricordati che non funziona con SA tra 1.0.0 e 1.0.2 per cui devi usare o
+ precedenti o successivi
+
  *******************************************************************"""
 
 """      [Database_source]     """

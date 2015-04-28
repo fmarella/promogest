@@ -85,11 +85,12 @@ def connect():
 
 def psycopg2new():
     from sqlalchemy.pool import NullPool
+    # poolclass = NullPool,  momentaneamente tolto
     engine = create_engine('postgresql://', creator=connect,
             convert_unicode=True,
             encoding='utf-8',
             proxy=MyProxy(),
-            poolclass=NullPool)
+            pool_recycle=3600)
     return engine
 
 
