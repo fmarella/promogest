@@ -27,16 +27,16 @@ from promogest.dao.Dao import Dao, Base
 class FamigliaArticolo(Base, Dao):
     try:
         __table__ = Table('famiglia_articolo', params['metadata'],
-                                    schema=params['schema'], autoload=True)
+                          schema=params['schema'], autoload=True)
     except:
         from data.famigliaArticolo import t_famiglia_articolo
         __table__ = t_famiglia_articolo
 
     children = relationship("FamigliaArticolo", backref=backref('parent',
-                                            remote_side="FamigliaArticolo.id"))
-    __mapper_args__ = {
-        "order_by" : "denominazione"
-    }
+                            remote_side="FamigliaArticolo.id"))
+    # __mapper_args__ = {
+    #     "order_by" : "denominazione"
+    # }
 
     def __init__(self, req=None):
         Dao.__init__(self, entity=self)

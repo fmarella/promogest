@@ -301,8 +301,8 @@ def handleEngine(schema= None):
         from promogest.EnvUtils import *
         mainSchema = "promogest2"
         engine = psycopg2new()
-        # if not engine:
-        #     engine = py_postgresql()
+        if not engine:
+            engine = py_postgresql()
         if not engine:
             engine = pg8000()
         if not engine:
