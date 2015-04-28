@@ -300,11 +300,11 @@ def handleEngine(schema= None):
     elif tipodb == "postgresql":
         from promogest.EnvUtils import *
         mainSchema = "promogest2"
-        engine = pg8000()
+        engine = psycopg2new()
+        # if not engine:
+        #     engine = py_postgresql()
         if not engine:
-            engine = py_postgresql()
-        if not engine:
-            engine = psycopg2new()
+            engine = pg8000()
         if not engine:
             engine = psycopg2old()
 

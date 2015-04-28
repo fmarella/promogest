@@ -32,6 +32,7 @@ from email.MIMEText import MIMEText
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from sqlalchemy.interfaces import PoolListener
+import sqlalchemy.pool as pool
 from sqlalchemy.exc import *
 from sqlalchemy.interfaces import ConnectionProxy
 #from promogest.preEnv import *
@@ -62,7 +63,7 @@ class MyProxy(ConnectionProxy):
             messageInfo(msg="Risulta inserito un Valore non corretto. Ricontrolla: "+str(e))
             session.rollback()
 
-def connect():
+def getconn():
     import psycopg2
     from promogest.lib.utils import messageInfo
 
@@ -83,67 +84,73 @@ def connect():
     if a:
         return a
 
+
+
+
+
 def psycopg2new():
     from sqlalchemy.pool import NullPool
     # poolclass = NullPool,  momentaneamente tolto
-    engine = create_engine('postgresql://', creator=connect,
+    mypool = pool.QueuePool(getconn, max_overflow=10, pool_size=5)
+    engine = create_engine('postgresql://',
             convert_unicode=True,
             encoding='utf-8',
             proxy=MyProxy(),
-            pool_recycle=3600)
+            pool=mypool,
+    )
     return engine
 
 
-def psycopg2old():
-    try:
-        from promogest.preEnv import *
-        engine = create_engine('postgres:' + '//'
-                    + user + ':'
-                    + password + '@'
-                    + host + ':'
-                    + port + '/'
-                    + database,
-                    encoding='utf-8',
-                    pool_size=30,
-                    convert_unicode=True,
-                    proxy=MyProxy())
-        return engine
-    except:
-        return None
-
-def pg8000():
-    try:
-        from promogest.preEnv import *
-        engine = create_engine('postgresql+pg8000:' + '//'
-                    + user + ':'
-                    + password + '@'
-                    + host + ':'
-                    + port + '/'
-                    + database,
-                    encoding='utf-8',
-                    pool_size=30,
-                    convert_unicode=True,
-                    proxy=MyProxy() )
-        return engine
-    except:
-        return None
-
-def py_postgresql():
-    try:
-        from promogest.preEnv import *
-        engine = create_engine('postgresql+pypostgresql:' + '//'
-                    + user + ':'
-                    + password + '@'
-                    + host + ':'
-                    + port + '/'
-                    + database,
-                    encoding='utf-8',
-                    pool_size=30,
-                    convert_unicode=True,
-                    proxy=MyProxy())
-        return engine
-    except:
-        return None
+# def psycopg2old():
+#     try:
+#         from promogest.preEnv import *
+#         engine = create_engine('postgres:' + '//'
+#                     + user + ':'
+#                     + password + '@'
+#                     + host + ':'
+#                     + port + '/'
+#                     + database,
+#                     encoding='utf-8',
+#                     pool_size=30,
+#                     convert_unicode=True,
+#                     proxy=MyProxy())
+#         return engine
+#     except:
+#         return None
+#
+# def pg8000():
+#     try:
+#         from promogest.preEnv import *
+#         engine = create_engine('postgresql+pg8000:' + '//'
+#                     + user + ':'
+#                     + password + '@'
+#                     + host + ':'
+#                     + port + '/'
+#                     + database,
+#                     encoding='utf-8',
+#                     pool_size=30,
+#                     convert_unicode=True,
+#                     proxy=MyProxy() )
+#         return engine
+#     except:
+#         return None
+#
+# def py_postgresql():
+#     try:
+#         from promogest.preEnv import *
+#         engine = create_engine('postgresql+pypostgresql:' + '//'
+#                     + user + ':'
+#                     + password + '@'
+#                     + host + ':'
+#                     + port + '/'
+#                     + database,
+#                     encoding='utf-8',
+#                     pool_size=30,
+#                     convert_unicode=True,
+#                     proxy=MyProxy())
+#         return engine
+#     except:
+#         return None
 
 def getConfigureDir(company='__default__'):
     """ Tests if another configuration folder was indicated """
